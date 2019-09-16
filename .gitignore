@@ -1,0 +1,21 @@
+# macOS filesystem
+.DS_Store
+
+# Editors and IDEs
+.idea/
+.vscode/
+
+# Generated files
+*.log
+*.sw*
+node_modules/
+
+# Build output
+/build/
+packages/*/dist
+packages/**/*.js
+packages/**/*.d.ts
+packages/**/*.map
+
+# Individual CHANGELOG files
+packages/**/CHANGELOG.md

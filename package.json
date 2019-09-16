@@ -1,0 +1,45 @@
+{
+  "name": "dnd",
+  "version": "0.0.1",
+  "description": "Drag and drop",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --mode=development --progress --colors",
+    "build:esmodules": "tsc --project ./tsconfig.json --module esnext --outDir ./packages --importHelpers",
+    "build:min": "cross-env NODE_ENV=production webpack -p --mode=production --progress --colors",
+    "dist": "npm run build && npm run build:min && npm run build:esmodules",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "copy": "node scripts/cp-pkgs.js"
+  },
+  "author": "Łukasz Rembacz",
+  "license": "MIT",
+  "babel": {
+    "presets": [
+      [
+        "env",
+        {
+          "modules": false
+        }
+      ]
+    ],
+    "plugins": [
+      "transform-object-assign"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.0",
+    "@babel/types": "^7.6.1",
+    "@types/node": "^12.7.5",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-transform-object-assign": "^6.22.0",
+    "cp-file": "^7.0.0",
+    "cross-env": "^5.2.1",
+    "dts-bundle": "^0.7.3",
+    "to-slug-case": "^1.0.0",
+    "ts-loader": "^6.1.0",
+    "typescript": "^3.6.3",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "webpack": "^4.40.2",
+    "webpack-cli": "^3.3.8"
+  }
+}

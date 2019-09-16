@@ -1,0 +1,29 @@
+{
+  "name": "@dnd/dropzone",
+  "version": "0.0.1",
+  "description": "Dropzone component",
+  "license": "MIT",
+  "main": "dist/dropzone.js",
+  "module": "index.js",
+  "sideEffects": false,
+  "types": "dist/dropzone.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lrembacz/dnd.git",
+    "directory": "packages/dropzone"
+  },
+  "keywords": [
+    "dnd",
+    "drag and drop",
+    "dropzone"
+  ],
+  "dependencies": {
+    "@material/base": "^3.1.0",
+    "@material/dom": "^3.1.0",
+    "@dnd/draggable": "^0.0.1",
+    "tslib": "^1.9.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
