@@ -1,5 +1,5 @@
-import * as draggable from '@dnd/draggable';
-import * as dropzone from '@dnd/dropzone';
+import * as draggable from '../draggable/index';
+import * as dropzone from '../dropzone/index';
 
 export {
     draggable,

@@ -1,5 +1,5 @@
 import {Point} from './utils/point';
-import {AvatarHandler} from './avatar';
+import {Avatar} from './avatar';
 
 
 export class DragInfo<D> {
@@ -12,8 +12,8 @@ export class DragInfo<D> {
     /// Position where the drag started.
     startPosition: Point;
 
-    /// The [AvatarHandler] or null if there is none.
-    avatarHandler: AvatarHandler;
+    /// The [Avatar] or null if there is none.
+    avatar: Avatar;
 
     /// The current position of the mouse or touch. This position is constrained
     /// by the horizontal/vertical axis.
@@ -33,7 +33,7 @@ export class DragInfo<D> {
         element: Element,
         data: D,
         startPosition: Point,
-        avatarHandler: AvatarHandler,
+        avatar: Avatar,
         horizontalOnly = false,
         verticalOnly = false
 
@@ -42,7 +42,7 @@ export class DragInfo<D> {
         this.element = element;
         this.data = data;
         this.startPosition = startPosition;
-        this.avatarHandler = avatarHandler;
+        this.avatar = avatar;
         this.horizontalOnly = horizontalOnly;
         this.verticalOnly = verticalOnly;
         // Initially set current position to startPosition.

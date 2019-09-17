@@ -1,4 +1,4 @@
-import MDCFoundation from '@material/base/foundation';
+import {MDCFoundation} from '@material/base/foundation';
 import {DropzoneAdapter} from './adapter';
 import {Acceptor} from './acceptor';
 import {DropzoneEvent} from './event';
@@ -60,7 +60,7 @@ export class DropzoneFoundation extends MDCFoundation<DropzoneAdapter> {
         ) {
             this.adapter_.notifyAction(
                 DropzoneFoundation.strings.DRAG_ENTER_EVENT,
-                DropzoneEvent.create((event as any).data.dragInfo, event.currentTarget as Element, event).toObject()
+                DropzoneEvent.create(event, (event as any).data.dragInfo, event.currentTarget as Element).toObject()
             );
 
             // Add the css class to indicate drag over.
@@ -84,7 +84,7 @@ export class DropzoneFoundation extends MDCFoundation<DropzoneAdapter> {
         ) {
             this.adapter_.notifyAction(
                 DropzoneFoundation.strings.DRAG_OVER_EVENT,
-                DropzoneEvent.create((event as any).data.dragInfo, event.currentTarget as Element, event).toObject()
+                DropzoneEvent.create(event, (event as any).data.dragInfo, event.currentTarget as Element).toObject()
             );
         }
     }
@@ -107,7 +107,7 @@ export class DropzoneFoundation extends MDCFoundation<DropzoneAdapter> {
             // Fire dragLeave event.
             this.adapter_.notifyAction(
                 DropzoneFoundation.strings.DRAG_LEAVE_EVENT,
-                DropzoneEvent.create((event as any).data.dragInfo, event.currentTarget as Element, event).toObject()
+                DropzoneEvent.create(event, (event as any).data.dragInfo, event.currentTarget as Element).toObject()
             );
 
             // Remove the css class.
@@ -132,7 +132,7 @@ export class DropzoneFoundation extends MDCFoundation<DropzoneAdapter> {
             // Fire drop event.
             this.adapter_.notifyAction(
                 DropzoneFoundation.strings.DROP_EVENT,
-                DropzoneEvent.create((event as any).data.dragInfo, event.currentTarget as Element, event).toObject()
+                DropzoneEvent.create(event, (event as any).data.dragInfo, event.currentTarget as Element).toObject()
             );
         }
     }

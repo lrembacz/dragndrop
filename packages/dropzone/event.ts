@@ -8,23 +8,23 @@ export class DropzoneEvent<D> {
     /// [DragInfo] snapped to draggable
     dragInfo: DragInfo<D>;
 
-    event: Event;
+    originalEvent: Event;
 
-    private constructor(dragInfo: DragInfo<D>, dropzoneElement: Element, event: Event) {
+    private constructor(originalEvent: Event, dragInfo: DragInfo<D>, dropzoneElement: Element) {
+        this.originalEvent = originalEvent;
         this.dragInfo = dragInfo;
         this.dropzoneElement = dropzoneElement;
-        this.event = event;
     }
 
-    static create<D>(dragInfo: DragInfo<D>, dropzoneElement: Element, event: Event) {
-        return new DropzoneEvent(dragInfo, dropzoneElement, event);
+    static create<D>(originalEvent: Event, dragInfo: DragInfo<D>, dropzoneElement: Element) {
+        return new DropzoneEvent(originalEvent, dragInfo, dropzoneElement);
     }
 
     toObject() {
         return {
+            originalEvent: this.originalEvent,
             dropzoneElement: this.dropzoneElement,
             dragInfo: this.dragInfo,
-            event: this.event
         };
     }
 }

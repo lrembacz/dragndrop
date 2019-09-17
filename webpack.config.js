@@ -6,7 +6,7 @@ const configs = [
         name: 'main-js-a-la-carte',
         entry: {
             draggable: path.resolve(__dirname, './packages/draggable/index.ts'),
-            // dropzone: path.resolve(__dirname, './packages/dropzone/index.ts')
+            dropzone: path.resolve(__dirname, './packages/dropzone/index.ts')
         },
         output: {
             path: path.resolve(__dirname, 'build'),

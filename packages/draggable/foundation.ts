@@ -1,10 +1,10 @@
 import {DraggableAdapter} from './adapter';
-import MDCFoundation from '@material/base/foundation';
+import {MDCFoundation} from '@material/base/foundation';
 import {EventManager, MouseManager, PointerManager,  TouchManager} from './manager';
 import {DraggableEvent} from './event';
 import {_DragEventDispatcher} from './dispatcher';
 import {AnimationHelper} from './utils/animation';
-import {AvatarHandler} from './avatar';
+import {Avatar} from './avatar';
 import {cssClasses, strings, numbers} from './constants';
 
 /// Counter to generate a unique id for each instance.
@@ -89,9 +89,9 @@ export class DraggableFoundation<D>  extends MDCFoundation<DraggableAdapter<D>> 
     /// See [Draggable] constructor.
     draggingClassBody: string = DraggableFoundation.cssClasses.DRAGGING_BODY_CLASS;
 
-    /// [avatarHandler] is a function to create a [DragAvatar] for this [Draggable].
+    /// [avatar] is a function to create a [DragAvatar] for this [Draggable].
     /// See [Draggable] constructor.
-    avatarHandler: AvatarHandler;
+    avatar: Avatar;
 
     /// Managers for browser events.
     _eventManagers: Array<EventManager<D>> = [];
@@ -111,8 +111,8 @@ export class DraggableFoundation<D>  extends MDCFoundation<DraggableAdapter<D>> 
         this.adapter_.getCurrentDrag().started = true;
 
         // Pass event to AvatarHandler.
-        if (this.avatarHandler != null) {
-            this.avatarHandler._handleDragStart(this.adapter_.getCurrentDrag().element, this.adapter_.getCurrentDrag().position);
+        if (this.avatar != null) {
+            this.avatar._handleDragStart(this.adapter_.getCurrentDrag().element, this.adapter_.getCurrentDrag().position);
         }
 
         // Fire the drag start event.
@@ -137,8 +137,8 @@ export class DraggableFoundation<D>  extends MDCFoundation<DraggableAdapter<D>> 
     /// The [target] is the actual target receiving the event.
     handleDrag(moveEvent: UIEvent, target: EventTarget): void {
         // Pass event to AvatarHandler.
-        if (this.avatarHandler != null) {
-            this.avatarHandler._handleDrag(this.adapter_.getCurrentDrag().startPosition, this.adapter_.getCurrentDrag().position);
+        if (this.avatar != null) {
+            this.avatar._handleDrag(this.adapter_.getCurrentDrag().startPosition, this.adapter_.getCurrentDrag().position);
         }
 
         // Dispatch internal drag enter, over, or leave event.
@@ -161,8 +161,8 @@ export class DraggableFoundation<D>  extends MDCFoundation<DraggableAdapter<D>> 
         // Only handle drag end if the user actually did drag and not just clicked.
         if (this.adapter_.getCurrentDrag().started) {
             // Pass event to AvatarHandler.
-            if (this.avatarHandler != null) {
-                this.avatarHandler._handleDragEnd(this.adapter_.getCurrentDrag().startPosition, this.adapter_.getCurrentDrag().position);
+            if (this.avatar != null) {
+                this.avatar._handleDragEnd(this.adapter_.getCurrentDrag().startPosition, this.adapter_.getCurrentDrag().position);
             }
 
             // Dispatch internal drop event if drag was not cancelled.
@@ -237,9 +237,9 @@ export class DraggableFoundation<D>  extends MDCFoundation<DraggableAdapter<D>> 
         // Destroy all managers with their listeners.
         this._eventManagers.forEach((m) => m.destroy());
         this._eventManagers.splice(0, this._eventManagers.length);
-        if (this.avatarHandler != null && this.avatarHandler.avatar != null) {
-            this.avatarHandler.avatar.remove();
-            this.avatarHandler = null;
+        if (this.avatar != null && this.avatar.element != null) {
+            this.avatar.element.remove();
+            this.avatar = null;
         }
     }
 

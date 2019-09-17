@@ -1,11 +1,11 @@
 import {AnimationHelper} from './utils/animation';
 import {Point} from './utils/point';
 
-export abstract class AvatarHandler {
+export abstract class Avatar {
     /// Returns the [avatar] element during a drag operation.
     ///
     /// If there is no drag operation going on, [avatar] will be null.
-    avatar: Element;
+    element: Element;
 
     /// The cached top margin of [avatar].
     _marginTop: number;
@@ -38,17 +38,17 @@ export abstract class AvatarHandler {
     /// Creates an [AvatarHelper] that uses the draggable element itself as
     /// drag avatar.
     ///
-    /// See [OriginalAvatarHandler].
+    /// See [OriginalAvatar].
     static create() {
-        return new OriginalAvatarHandler();
+        return new OriginalAvatar();
     }
 
     /// Creates an [AvatarHelper] that creates a clone of the draggable element
     /// as drag avatar. The avatar is removed at the end of the drag operation.
     ///
-    /// See [CloneAvatarHandler].
+    /// See [CloneAvatar].
     static clone() {
-        return new CloneAvatarHandler();
+        return new CloneAvatar();
     }
 
     /// Handles the drag start.
@@ -58,8 +58,8 @@ export abstract class AvatarHandler {
 
         // Sets the pointer-events CSS property of avatar to 'none' which enables
         // mouse and touch events to go trough to the element under the avatar.
-        this._pointerEventsBeforeDrag = (this.avatar as HTMLElement).style.pointerEvents;
-        (this.avatar as HTMLElement).style.pointerEvents = 'none';
+        this._pointerEventsBeforeDrag = (this.element as HTMLElement).style.pointerEvents;
+        (this.element as HTMLElement).style.pointerEvents = 'none';
     }
 
     /// Handles the drag.
@@ -78,11 +78,11 @@ export abstract class AvatarHandler {
         this.dragEnd(startPosition, position);
 
         // Reset the pointer-events CSS property to its original value.
-        (this.avatar as HTMLElement).style.pointerEvents = this._pointerEventsBeforeDrag;
+        (this.element as HTMLElement).style.pointerEvents = this._pointerEventsBeforeDrag;
         this._pointerEventsBeforeDrag = null;
 
         // Reset avatar.
-        this.avatar = null;
+        this.element = null;
 
         // Reset margins (causes them to be recalculated in next drag operation).
         this._marginTop = null;
@@ -122,8 +122,8 @@ export abstract class AvatarHandler {
 
         AnimationHelper.requestUpdate(() => {
             // Unsing `translate3d` to activate GPU hardware-acceleration (a bit of a hack).
-            if (this.avatar != null) {
-                (this.avatar as HTMLElement).style.transform = `translate3d(${position.x}px, ${position.y}px, 0)`;
+            if (this.element != null) {
+                (this.element as HTMLElement).style.transform = `translate3d(${position.x}px, ${position.y}px, 0)`;
             }
         });
     }
@@ -132,7 +132,7 @@ export abstract class AvatarHandler {
     /// from [setTranslate].
     removeTranslate(): void {
         AnimationHelper.stop();
-        (this.avatar as HTMLElement).style.transform = null;
+        (this.element as HTMLElement).style.transform = null;
     }
 
     /// Sets the CSS left/top values of [avatar]. Takes care of any left/top
@@ -141,8 +141,8 @@ export abstract class AvatarHandler {
     /// Note: The [avatar] must already be in the DOM for the margins to be
     /// calculated correctly.
     setLeftTop(position: Point): void {
-        (this.avatar as HTMLElement).style.left = `${position.x - this.marginLeft}px`;
-        (this.avatar as HTMLElement).style.top = `${position.y - this.marginTop}px`;
+        (this.element as HTMLElement).style.left = `${position.x - this.marginLeft}px`;
+        (this.element as HTMLElement).style.top = `${position.y - this.marginTop}px`;
     }
 
     /// Caches the [marginLeft] and [marginTop] of [avatar].
@@ -151,25 +151,25 @@ export abstract class AvatarHandler {
     /// operation.
     cacheMargins(): void {
         // Calculate margins.
-        const computedStyles = window.getComputedStyle((this.avatar as HTMLElement));
+        const computedStyles = window.getComputedStyle((this.element as HTMLElement));
         this._marginLeft = parseInt(computedStyles.marginLeft.replace('px', ''), 10) || 0;
         this._marginTop = parseInt(computedStyles.marginTop.replace('px', ''), 10) || 0;
     }
 }
 
-export class CloneAvatarHandler extends AvatarHandler {
+export class CloneAvatar extends Avatar {
     dragStart(draggable: Element, startPosition: Point): void {
         // Clone the draggable to create the avatar.
-        this.avatar = (draggable.cloneNode(true) as Element);
-        this.avatar.removeAttribute('id');
-        (this.avatar as HTMLElement).style.cursor = 'inherit';
+        this.element = (draggable.cloneNode(true) as Element);
+        this.element.removeAttribute('id');
+        (this.element as HTMLElement).style.cursor = 'inherit';
 
         // Ensure avatar has an absolute position.
-        (this.avatar as HTMLElement).style.position = 'absolute';
-        (this.avatar as HTMLElement).style.zIndex = '100';
+        (this.element as HTMLElement).style.position = 'absolute';
+        (this.element as HTMLElement).style.zIndex = '100';
 
         // Add the drag avatar to the parent element.
-        draggable.parentNode.appendChild(this.avatar);
+        draggable.parentNode.appendChild(this.element);
 
         // Set the initial position of avatar (relative to the closest positioned
         // ancestor).
@@ -181,23 +181,23 @@ export class CloneAvatarHandler extends AvatarHandler {
     }
 
     dragEnd(startPosition: Point, position: Point): void {
-        this.avatar.remove();
+        this.element.remove();
     }
 }
 
-export class OriginalAvatarHandler extends AvatarHandler {
+export class OriginalAvatar extends Avatar {
     _draggableStartOffset: Point;
 
     dragStart(draggable: Element, startPosition: Point): void {
         // Use the draggable itself as avatar.
-        this.avatar = draggable;
+        this.element = draggable;
 
         // Get the start offset of the draggable (relative to the closest positioned
         // ancestor).
         this._draggableStartOffset = new Point((draggable as HTMLElement).offsetLeft, (draggable as HTMLElement).offsetTop);
 
         // Ensure avatar has an absolute position.
-        (this.avatar as HTMLElement).style.position = 'absolute';
+        (this.element as HTMLElement).style.position = 'absolute';
 
         // Set the initial position of the original.
         this.setLeftTop(this._draggableStartOffset);

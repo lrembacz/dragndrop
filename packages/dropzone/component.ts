@@ -3,14 +3,9 @@ import {DropzoneFoundation} from './foundation';
 import {Acceptor} from './acceptor';
 import {DropzoneAdapter} from './adapter';
 import {CustomEventListener} from '@material/base/types';
-import {DraggableFoundation} from '@dnd/draggable/foundation';
 import {applyPassive} from '@material/dom/events';
-
-export interface DropzoneAttachOpts {
-    acceptor?: Acceptor;
-    overClass?: string;
-    invalidClass?: string;
-}
+import {DraggableFoundation} from '../draggable/foundation';
+import {DropzoneAttachOpts} from './types';
 
 export const DropzoneAttachOptsInitial: DropzoneAttachOpts = {
     acceptor: undefined,

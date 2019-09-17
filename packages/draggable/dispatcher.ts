@@ -24,7 +24,7 @@ export class _DragEventDispatcher {
             // Moved on the same element --> dispatch dragOver.
             const dragOverEvent: MouseEvent = new MouseEvent(DraggableFoundation.strings.CUSTOM_DRAG_OVER, {bubbles: true});
             (dragOverEvent as any).data = {
-                currentDrag: draggableFoundation.getAdapter().getCurrentDrag()
+                dragInfo: draggableFoundation.getAdapter().getCurrentDrag()
             };
             // const dragOverEvent: CustomEvent = new CustomEvent(DraggableFoundation.strings.CUSTOM_DRAG_OVER);
             target.dispatchEvent(dragOverEvent);
@@ -32,7 +32,7 @@ export class _DragEventDispatcher {
             // Entered a new element --> fire dragEnter of new element.
             const dragEnterEvent: MouseEvent = new MouseEvent(DraggableFoundation.strings.CUSTOM_DRAG_ENTER, {relatedTarget: this.previousTarget, bubbles: true});
             (dragEnterEvent as any).data = {
-                currentDrag: draggableFoundation.getAdapter().getCurrentDrag()
+                dragInfo: draggableFoundation.getAdapter().getCurrentDrag()
             };
             // const dragEnterEvent: CustomEvent = new CustomEvent(DraggableFoundation.strings.CUSTOM_DRAG_ENTER, dragEnterEventInit);
             target.dispatchEvent(dragEnterEvent);
@@ -42,7 +42,7 @@ export class _DragEventDispatcher {
 
                 const dragLeaveEvent: MouseEvent = new MouseEvent(DraggableFoundation.strings.CUSTOM_DRAG_LEAVE, {relatedTarget: target, bubbles: true});
                 (dragLeaveEvent as any).data = {
-                    currentDrag: draggableFoundation.getAdapter().getCurrentDrag()
+                    dragInfo: draggableFoundation.getAdapter().getCurrentDrag()
                 };
                 // const dragLeaveEvent: CustomEvent = new CustomEvent(DraggableFoundation.strings.CUSTOM_DRAG_LEAVE);
                 this.previousTarget.dispatchEvent(dragLeaveEvent);
@@ -51,7 +51,7 @@ export class _DragEventDispatcher {
             // Also fire the first dragOver event for the new element.
             const dragOverEvent: MouseEvent = new MouseEvent(DraggableFoundation.strings.CUSTOM_DRAG_OVER, {bubbles: true});
             (dragOverEvent as any).data = {
-                currentDrag: draggableFoundation.getAdapter().getCurrentDrag()
+                dragInfo: draggableFoundation.getAdapter().getCurrentDrag()
             };
             // const dragOverEvent: CustomEvent = new CustomEvent(DraggableFoundation.strings.CUSTOM_DRAG_OVER);
             target.dispatchEvent(dragOverEvent);
@@ -73,7 +73,7 @@ export class _DragEventDispatcher {
 
         const dropEvent: MouseEvent = new MouseEvent(DraggableFoundation.strings.CUSTOM_DROP, {bubbles: true});
         (dropEvent as any).data = {
-            currentDrag: draggableFoundation.getAdapter().getCurrentDrag()
+            dragInfo: draggableFoundation.getAdapter().getCurrentDrag()
         };
         // const dropEvent: CustomEvent = new CustomEvent(DraggableFoundation.strings.CUSTOM_DROP);
         target.dispatchEvent(dropEvent);
@@ -87,7 +87,7 @@ export class _DragEventDispatcher {
         if (this.previousTarget != null) {
             const dragLeaveEvent: MouseEvent = new MouseEvent(DraggableFoundation.strings.CUSTOM_DRAG_LEAVE, {bubbles: true});
             (dragLeaveEvent as any).data = {
-                currentDrag: draggableFoundation.getAdapter().getCurrentDrag()
+                dragInfo: draggableFoundation.getAdapter().getCurrentDrag()
             };
             // const dragLeaveEvent: CustomEvent = new CustomEvent(DraggableFoundation.strings.CUSTOM_DRAG_LEAVE);
             this.previousTarget.dispatchEvent(dragLeaveEvent);

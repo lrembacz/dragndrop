@@ -1,28 +1,16 @@
 import {MDCComponent} from '@material/base/component';
 import {DraggableFoundation} from './foundation';
 import {DragInfo} from './drag-info';
-import {AvatarHandler} from './avatar';
+import {Avatar} from './avatar';
 import {DraggableAdapter} from './adapter';
-import {DraggableInterface} from './types';
+import {DraggableAttachOpts, DraggableInterface} from './types';
 import {applyPassive} from '@material/dom/events';
 
 let _currentDrag: DragInfo<any> | null;
 
-export interface DraggableAttachOpts<T> {
-    data?: T;
-    avatarHandler?: AvatarHandler;
-    horizontalOnly?: boolean;
-    verticalOnly?: boolean;
-    handle?: any;
-    cancel?: string;
-    draggingClass?: string;
-    draggingClassBody?: string;
-    minDragStartDistance?: number;
-}
-
 export const DraggableAttachOptsInitial: DraggableAttachOpts<any> = {
     data: undefined,
-    avatarHandler: undefined,
+    avatar: undefined,
     horizontalOnly: undefined,
     verticalOnly: undefined,
     handle: undefined,
@@ -40,8 +28,8 @@ export class Draggable<D> extends MDCComponent<DraggableFoundation<D>> implement
             draggable.data = opts.data;
         }
 
-        if (opts.avatarHandler !== undefined) {
-            draggable.avatarHandler = opts.avatarHandler;
+        if (opts.avatar !== undefined) {
+            draggable.avatar = opts.avatar;
         }
 
         if (opts.horizontalOnly !== undefined) {
@@ -58,10 +46,6 @@ export class Draggable<D> extends MDCComponent<DraggableFoundation<D>> implement
 
         if (opts.cancel !== undefined) {
             draggable.cancel = opts.cancel;
-        }
-
-        if (opts.draggingClass !== undefined) {
-            draggable.draggingClass = opts.draggingClass;
         }
 
         if (opts.draggingClass !== undefined) {
@@ -131,12 +115,12 @@ export class Draggable<D> extends MDCComponent<DraggableFoundation<D>> implement
         this.foundation_.minDragStartDistance = minDragStartDistance;
     }
 
-    get avatarHandler() {
-        return this.foundation_.avatarHandler;
+    get avatar() {
+        return this.foundation_.avatar;
     }
 
-    set avatarHandler(avatarHandler: AvatarHandler) {
-        this.foundation_.avatarHandler = avatarHandler;
+    set avatar(avatar: Avatar) {
+        this.foundation_.avatar = avatar;
     }
 
     get draggingClass() {
@@ -156,7 +140,6 @@ export class Draggable<D> extends MDCComponent<DraggableFoundation<D>> implement
     }
 
     initialSyncWithDOM() {
-        this.foundation_.init();
         this._id = this.foundation_.id;
         this.foundation_.initEventManagers();
     }
@@ -183,10 +166,7 @@ export class Draggable<D> extends MDCComponent<DraggableFoundation<D>> implement
             setCurrentDrag: (currentDrag: DragInfo<D> | null) => _currentDrag = currentDrag,
             getRootElement: () => this.root_,
         };
-        const foundation = new DraggableFoundation<D>(adapter);
-        foundation.init();
-
-        return foundation;
+        return new DraggableFoundation<D>(adapter);
     }
 
     abort(): void {

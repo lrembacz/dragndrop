@@ -79,7 +79,7 @@ export abstract class EventManager<D> {
             (event.currentTarget as Element),
             this.foundation.data,
             position,
-            this.foundation.avatarHandler,
+            this.foundation.avatar,
             this.foundation.horizontalOnly,
             this.foundation.verticalOnly
         );
@@ -169,13 +169,13 @@ export abstract class EventManager<D> {
         }
 
         // Test if target is the drag avatar.
-        if (this.foundation.avatarHandler != null &&
-            this.foundation.avatarHandler.avatar != null &&
-            this.foundation.avatarHandler.avatar.contains((target as HTMLElement))) {
+        if (this.foundation.avatar != null &&
+            this.foundation.avatar.element != null &&
+            this.foundation.avatar.element.contains((target as HTMLElement))) {
             // Target is the drag avatar, get element underneath.
-            (this.foundation.avatarHandler.avatar as HTMLElement).style.visibility = 'hidden';
+            (this.foundation.avatar.element as HTMLElement).style.visibility = 'hidden';
             target = this._getRealTargetFromPoint(clientPosition);
-            (this.foundation.avatarHandler.avatar as HTMLElement).style.visibility = 'visible';
+            (this.foundation.avatar.element as HTMLElement).style.visibility = 'visible';
         }
 
         target = this._recursiveShadowDomTarget(clientPosition, target);
