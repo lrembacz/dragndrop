@@ -62,10 +62,11 @@ export class Draggable<D> extends MDCComponent<DraggableFoundation<D>> implement
 
         return draggable;
     }
-
-    _id: number;
-
     root_: Element; // assigned in MDCComponent constructor
+
+    get _id() {
+        return this.foundation_.id;
+    }
 
     get data() {
         return this.foundation_.data;
@@ -140,7 +141,6 @@ export class Draggable<D> extends MDCComponent<DraggableFoundation<D>> implement
     }
 
     initialSyncWithDOM() {
-        this._id = this.foundation_.id;
         this.foundation_.initEventManagers();
     }
 

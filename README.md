@@ -10,7 +10,7 @@ Drag and drop components are written in Typescript and are
 
 ## Important links
 
-- [Demos]
+- [Demos](https://dnd.lukaszrembacz.pl/examples/)
 - [Components on other frameworks](docs/framework-wrappers.md)
 - [All Components](packages/)
 - [Changelog](./CHANGELOG.md)

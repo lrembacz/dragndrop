@@ -4,7 +4,7 @@ Dropzone is element which `Draggable` element can be dropped on.
 
 ## Design & API Documentation
 
-- [Demo] 
+- [Demos](https://dnd.lukaszrembacz.pl/examples/)
 
 ## Installation
 

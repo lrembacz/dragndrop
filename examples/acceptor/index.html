@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>Dart Drag and Drop: Acceptor</title>
+
+    <link rel="stylesheet"
+          href="example.css">
+</head>
+
+<body>
+<div class="container">
+    <a href="https://github.com/lrembacz/dnd/tree/master/examples/acceptor" target="_parent">Example Source on GitHub</a>
+
+    <div class="dropzone-container">
+        <div id="dropzone-1"
+             class="dropzone">
+            <p>Dropzone 1</p>
+            (Accepts all)
+        </div>
+        <div id="dropzone-2"
+             class="dropzone">
+            <p>Dropzone 2</p>
+            (Accepts B only)
+        </div>
+        <div id="dropzone-3"
+             class="dropzone">
+            <p>Dropzone 3</p>
+            (Uses Custom Acceptor with Query Selector)
+            (Accepts '#draggable-c')
+        </div>
+    </div>
+
+    <div id="draggable-a"
+         class="draggable">
+        <p>Draggable A</p>
+    </div>
+    <div id="draggable-b"
+         class="draggable">
+        <p>Draggable B</p>
+    </div>
+    <div id="draggable-c"
+         class="draggable">
+        <p>Draggable C</p>
+    </div>
+</div>
+    <script src="../../packages/dnd/dist/dnd.js"></script>
+    <script src="example.js"></script>
+</body>
+
+</html>

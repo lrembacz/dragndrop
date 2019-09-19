@@ -48,7 +48,7 @@ export class DraggableFoundation<D>  extends MDCFoundation<DraggableAdapter<D>> 
     }
 
     init() {
-        if (this.id) {
+        if (this.id === undefined) {
             this.id = idCounter++;
         }
     }
