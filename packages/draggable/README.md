@@ -38,11 +38,11 @@ You can also use `attachTo()` as an alias;
 Draggable.attachTo(document.querySelector('.draggable'));
 ```
 
-Events | 
---- | --- | ---
-`onDragStart` |  |
-`onDrag` |  |
-`onDragEnd` |  |
+Events | Type | Data | Description
+--- | --- | --- | ---
+`onDragStart` | CustomEvent | {originalEvent, dragInfo, dropzoneElement} | Event dispatched when dragging starts
+`onDrag` | CustomEvent | {originalEvent, dragInfo, dropzoneElement} | Event dispatched when dragging
+`onDragEnd` | CustomEvent | {originalEvent, dragInfo, dropzoneElement} | Event dispatched when dragging ends
     
 Property | Value Type | Description
 --- | --- | ---
