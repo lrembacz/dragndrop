@@ -1,5 +1,6 @@
 import {Point} from './utils/point';
 import {Avatar} from './avatar';
+import {Axis} from './types';
 
 
 export class DragInfo<D> {
@@ -25,8 +26,7 @@ export class DragInfo<D> {
     /// Flag indicating if the drag started.
     started: boolean = false;
 
-    horizontalOnly: boolean;
-    verticalOnly: boolean;
+    axis: Axis;
 
     constructor(
         draggableId: number,
@@ -34,17 +34,14 @@ export class DragInfo<D> {
         data: D,
         startPosition: Point,
         avatar: Avatar,
-        horizontalOnly = false,
-        verticalOnly = false
-
+        axis: Axis = 'both',
     ) {
         this.draggableId = draggableId;
         this.element = element;
         this.data = data;
         this.startPosition = startPosition;
         this.avatar = avatar;
-        this.horizontalOnly = horizontalOnly;
-        this.verticalOnly = verticalOnly;
+        this.axis = axis;
         // Initially set current position to startPosition.
         this._position = startPosition;
     }
@@ -63,12 +60,12 @@ export class DragInfo<D> {
     /// Constrains the axis if [horizontalOnly] or [verticalOnly] is true.
     _constrainAxis(pos: Point): Point {
         // Set y-value to startPosition if horizontalOnly.
-        if (this.horizontalOnly) {
+        if (this.axis === 'horizontal') {
             return new Point(pos.x, this.startPosition.y);
         }
 
         // Set x-value to startPosition if verticalOnly.
-        if (this.verticalOnly) {
+        if (this.axis === 'vertical') {
             return new Point(this.startPosition.x, pos.y);
         }
 

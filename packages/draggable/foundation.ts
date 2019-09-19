@@ -6,6 +6,7 @@ import {_DragEventDispatcher} from './dispatcher';
 import {AnimationHelper} from './utils/animation';
 import {Avatar} from './avatar';
 import {cssClasses, strings, numbers} from './constants';
+import {Axis} from './types';
 
 /// Counter to generate a unique id for each instance.
 let idCounter: number = 0;
@@ -61,13 +62,12 @@ export class DraggableFoundation<D>  extends MDCFoundation<DraggableAdapter<D>> 
     /// Data passed which is snapped to draggable
     data: D;
 
-    /// When set to true, only horizontal dragging is tracked. This enables
-    /// vertical touch dragging to be used for scrolling.
-    horizontalOnly: boolean = false;
+    /// Turn on/off draggable
+    draggable: boolean = true;
 
-    /// When set to true, only vertical dragging is tracked. This enables
-    /// horizontal touch dragging to be used for scrolling.
-    verticalOnly: boolean = false;
+    /// Axis 'both', 'vertical', 'horizontal'
+    /// Set this to drag in given axis
+    axis: Axis = 'both';
 
     /// Restricts dragging from starting to the [handle].
     /// See [Draggable] constructor.
@@ -107,6 +107,9 @@ export class DraggableFoundation<D>  extends MDCFoundation<DraggableAdapter<D>> 
     /// Handles the drag start. The [moveEvent] might either be a
     /// [TouchEvent] or a [MouseEvent].
     handleDragStart(moveEvent: UIEvent) {
+        if (!this.draggable) {
+            return;
+        }
         // Set the drag started flag.
         this.adapter_.getCurrentDrag().started = true;
 

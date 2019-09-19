@@ -25,10 +25,10 @@ export abstract class EventManager<D> {
 
         // Disable touch actions (scrolling, panning, zooming) depending on
         // horizontalOnly / verticalOnly options.
-        if (foundation.horizontalOnly) {
+        if (foundation.axis === 'horizontal') {
             // Only allow vertical scrolling, panning.
             this.foundation.getAdapter().setStyle('touchAction', 'pan-y');
-        } else if (foundation.verticalOnly) {
+        } else if (foundation.axis === 'vertical') {
             // Only allow horizontal scrolling, panning.
             this.foundation.getAdapter().setStyle('touchAction', 'pan-x');
         } else {
@@ -80,8 +80,7 @@ export abstract class EventManager<D> {
             this.foundation.data,
             position,
             this.foundation.avatar,
-            this.foundation.horizontalOnly,
-            this.foundation.verticalOnly
+            this.foundation.axis
         );
         this.foundation.getAdapter().setCurrentDrag(dragInfo);
 
@@ -324,13 +323,13 @@ export class TouchManager<D> extends EventManager<D> {
         const delta: Point = currentPosition.subtract(new Point(this.foundation.getAdapter().getCurrentDrag().startPosition.x, this.foundation.getAdapter().getCurrentDrag().startPosition.y));
 
         // If horizontalOnly test for vertical movement.
-        if (this.foundation.horizontalOnly && (Math.abs(delta.y) > Math.abs(delta.x))) {
+        if ((this.foundation.axis === 'horizontal') && (Math.abs(delta.y) > Math.abs(delta.x))) {
             // Vertical scrolling.
             return true;
         }
 
         // If verticalOnly test for horizontal movement.
-        if (this.foundation.verticalOnly && (Math.abs(delta.x) > Math.abs(delta.y))) {
+        if ((this.foundation.axis === 'vertical') && (Math.abs(delta.x) > Math.abs(delta.y))) {
             // Horizontal scrolling.
             return true;
         }

@@ -1,10 +1,12 @@
 import {Avatar} from './avatar';
 
+export type Axis = 'both' | 'horizontal' | 'vertical';
+
 export interface DraggableAttachOpts<T> {
     data?: T;
+    draggable: boolean;
     avatar?: Avatar;
-    horizontalOnly?: boolean;
-    verticalOnly?: boolean;
+    axis: Axis;
     handle?: any;
     cancel?: string;
     draggingClass?: string;

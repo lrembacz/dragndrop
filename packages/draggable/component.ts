@@ -3,16 +3,16 @@ import {DraggableFoundation} from './foundation';
 import {DragInfo} from './drag-info';
 import {Avatar} from './avatar';
 import {DraggableAdapter} from './adapter';
-import {DraggableAttachOpts, DraggableInterface} from './types';
+import {Axis, DraggableAttachOpts, DraggableInterface} from './types';
 import {applyPassive} from '@material/dom/events';
 
 let _currentDrag: DragInfo<any> | null;
 
 export const DraggableAttachOptsInitial: DraggableAttachOpts<any> = {
     data: undefined,
+    draggable: undefined,
     avatar: undefined,
-    horizontalOnly: undefined,
-    verticalOnly: undefined,
+    axis: undefined,
     handle: undefined,
     cancel: undefined,
     draggingClass: undefined,
@@ -28,16 +28,16 @@ export class Draggable<D> extends MDCComponent<DraggableFoundation<D>> implement
             draggable.data = opts.data;
         }
 
+        if (opts.draggable !== undefined) {
+            draggable.draggable = opts.draggable;
+        }
+
         if (opts.avatar !== undefined) {
             draggable.avatar = opts.avatar;
         }
 
-        if (opts.horizontalOnly !== undefined) {
-            draggable.horizontalOnly = opts.horizontalOnly;
-        }
-
-        if (opts.verticalOnly !== undefined) {
-            draggable.verticalOnly = opts.verticalOnly;
+        if (opts.axis !== undefined) {
+            draggable.axis = opts.axis;
         }
 
         if (opts.handle !== undefined) {
@@ -75,20 +75,20 @@ export class Draggable<D> extends MDCComponent<DraggableFoundation<D>> implement
         this.foundation_.data = data;
     }
 
-    get horizontalOnly() {
-        return this.foundation_.horizontalOnly;
+    get draggable() {
+        return this.foundation_.draggable;
     }
 
-    set horizontalOnly(horizontalOnly: boolean) {
-        this.foundation_.horizontalOnly = horizontalOnly;
+    set draggable(draggable: boolean) {
+        this.foundation_.draggable = draggable;
     }
 
-    get verticalOnly() {
-        return this.foundation_.verticalOnly;
+    get axis() {
+        return this.foundation_.axis;
     }
 
-    set verticalOnly(verticalOnly: boolean) {
-        this.foundation_.verticalOnly = verticalOnly;
+    set axis(axis: Axis) {
+        this.foundation_.axis = axis;
     }
 
     get handle() {
