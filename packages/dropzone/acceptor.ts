@@ -1,6 +1,7 @@
 /// An acceptor defines which draggable elements are accepted by a [Dropzone].
 
-import {DraggableInterface, DragInfo} from '../draggable';
+import {DragInfo} from '@dragndrop/draggable/drag-info';
+import {DraggableInterface} from '@dragndrop/draggable/types';
 
 export abstract class Acceptor {
     /// Returns true if the [draggableElement] with [draggableId] should be

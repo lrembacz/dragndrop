@@ -4,8 +4,8 @@ import {Acceptor} from './acceptor';
 import {DropzoneAdapter} from './adapter';
 import {CustomEventListener} from '@material/base/types';
 import {applyPassive} from '@material/dom/events';
-import {DraggableFoundation} from '../draggable/foundation';
 import {DropzoneAttachOpts} from './types';
+import {DraggableFoundation} from '@dragndrop/draggable/foundation';
 
 export const DropzoneAttachOptsInitial: DropzoneAttachOpts = {
     acceptor: undefined,
