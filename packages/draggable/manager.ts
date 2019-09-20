@@ -245,6 +245,10 @@ export class TouchManager<D> extends EventManager<D> {
     installStart(): void {
         let touchStartHandler: any;
         this.foundation.getAdapter().registerInteractionHandler('touchstart',touchStartHandler = (event: Event) => {
+            // Fix for chrome
+            // When touch event occur it should not call mouseEvents at the same time
+            event.preventDefault();
+
             // Ignore if drag is already beeing handled.
             if (this.foundation.getAdapter().getCurrentDrag() != null) {
                 return;
