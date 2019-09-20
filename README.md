@@ -51,4 +51,4 @@ It will create Draggable instance on `.draggable` class element.
 Special thanks to:
 
 - [Material components for web](https://github.com/material-components/material-components-web) for base components and configs.
-- [dart-dragndrop](https://github.com/marcojakob/dart-dragndrop) as @dragndrop package is based on this package.
+- [dart-dnd](https://github.com/marcojakob/dart-dnd) as @dragndrop package is based on this package.
