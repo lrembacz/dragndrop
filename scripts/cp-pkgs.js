@@ -45,7 +45,6 @@ const isValidCwd = (
 );
 
 if (!isValidCwd) {
-    console.log(path.basename(process.cwd()));
     console.error(
         'Invalid CWD. Please ensure you are running this from the root of the repo, and that you have run `npm run dist`'
     );
