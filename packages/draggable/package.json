@@ -1,5 +1,5 @@
 {
-  "name": "@dnd/draggable",
+  "name": "@dragndrop/draggable",
   "version": "0.0.1",
   "description": "Draggable component",
   "license": "MIT",
@@ -9,11 +9,11 @@
   "types": "dist/draggable.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lrembacz/dnd.git",
+    "url": "https://github.com/lrembacz/dragndrop.git",
     "directory": "packages/draggable"
   },
   "keywords": [
-    "dnd",
+    "dragndrop",
     "drag and drop",
     "draggable"
   ],

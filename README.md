@@ -10,7 +10,7 @@ Drag and drop components are written in Typescript and are
 
 ## Important links
 
-- [Demos](https://dnd.lukaszrembacz.pl/examples/)
+- [Demos](https://dragndrop.lukaszrembacz.pl/examples/)
 - [Components on other frameworks](docs/framework-wrappers.md)
 - [All Components](packages/)
 - [Changelog](./CHANGELOG.md)
@@ -22,7 +22,7 @@ Drag and drop components are written in Typescript and are
 Install draggable node module to your project.
 
 ```
-npm install @dnd/draggable
+npm install @dragndrop/draggable
 ```
 
 #### HTML
@@ -40,7 +40,7 @@ Sample usage of draggable component. Please see [Draggable](packages/draggable) 
 Import `Draggable` module.
 
 ```js
-import {Draggable} from '@dnd/draggable';
+import {Draggable} from '@dragndrop/draggable';
 const draggable = new Draggable(document.querySelector('.draggable'));
 ```
 
@@ -51,4 +51,4 @@ It will create Draggable instance on `.draggable` class element.
 Special thanks to:
 
 - [Material components for web](https://github.com/material-components/material-components-web) for base components and configs.
-- [dart-dnd](https://github.com/marcojakob/dart-dnd) as @dnd package is based on this package.
+- [dart-dragndrop](https://github.com/marcojakob/dart-dragndrop) as @dragndrop package is based on this package.

@@ -4,12 +4,12 @@ Draggable uses the JavaScript to provide draggable functionality to HTML element
 
 ## Design & API Documentation
 
-- [Demos](https://dnd.lukaszrembacz.pl/examples/)
+- [Demos](https://dragndrop.lukaszrembacz.pl/examples/)
 
 ## Installation
 
 ```
-npm install @dnd/draggable
+npm install @dragndrop/draggable
 ```
 
 ## Usage

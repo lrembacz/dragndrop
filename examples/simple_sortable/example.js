@@ -1,8 +1,8 @@
 // Install same elements as draggable and dropzone.
 document.querySelectorAll('.sortable').forEach((element) => {
-    dnd.draggable.Draggable.attachTo(element, { avatar: new dnd.draggable.Avatar.clone()});
+    dragndrop.draggable.Draggable.attachTo(element, { avatar: new dragndrop.draggable.Avatar.clone()});
 
-    dnd.dropzone.Dropzone.attachTo(element);
+    dragndrop.dropzone.Dropzone.attachTo(element);
 
     element.addEventListener('onDrop', (event) => {
         const elm1 = event.detail.dropzoneElement;

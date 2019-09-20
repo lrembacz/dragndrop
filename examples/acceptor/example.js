@@ -1,5 +1,5 @@
 // Custom Acceptor
-class QuerySelectorAcceptor extends dnd.dropzone.Acceptor {
+class QuerySelectorAcceptor extends dragndrop.dropzone.Acceptor {
     querySelector;
     constructor(querySelector) {
         super();
@@ -13,15 +13,15 @@ class QuerySelectorAcceptor extends dnd.dropzone.Acceptor {
 }
 
 // Install draggables.
-const draggableA = dnd.draggable.Draggable.attachTo(document.querySelector('#draggable-a'), { avatar: new dnd.draggable.Avatar.clone()});
-const draggableB = dnd.draggable.Draggable.attachTo(document.querySelector('#draggable-b'), { avatar: new dnd.draggable.Avatar.clone()});
-const draggableC = dnd.draggable.Draggable.attachTo(document.querySelector('#draggable-c'), { avatar: new dnd.draggable.Avatar.clone()});
+const draggableA = dragndrop.draggable.Draggable.attachTo(document.querySelector('#draggable-a'), { avatar: new dragndrop.draggable.Avatar.clone()});
+const draggableB = dragndrop.draggable.Draggable.attachTo(document.querySelector('#draggable-b'), { avatar: new dragndrop.draggable.Avatar.clone()});
+const draggableC = dragndrop.draggable.Draggable.attachTo(document.querySelector('#draggable-c'), { avatar: new dragndrop.draggable.Avatar.clone()});
 
-const dropzone1 = dnd.dropzone.Dropzone.attachTo(document.querySelector('#dropzone-1'));
-const dropzone2 = dnd.dropzone.Dropzone.attachTo(document.querySelector('#dropzone-2'), {
-    acceptor: new dnd.dropzone.DraggablesAcceptor([draggableB])
+const dropzone1 = dragndrop.dropzone.Dropzone.attachTo(document.querySelector('#dropzone-1'));
+const dropzone2 = dragndrop.dropzone.Dropzone.attachTo(document.querySelector('#dropzone-2'), {
+    acceptor: new dragndrop.dropzone.DraggablesAcceptor([draggableB])
 });
 
-const dropzone3 = dnd.dropzone.Dropzone.attachTo(document.querySelector('#dropzone-3'), {
+const dropzone3 = dragndrop.dropzone.Dropzone.attachTo(document.querySelector('#dropzone-3'), {
     acceptor: new QuerySelectorAcceptor('#draggable-c')
 });

@@ -4,12 +4,12 @@ Dropzone is element which `Draggable` element can be dropped on.
 
 ## Design & API Documentation
 
-- [Demos](https://dnd.lukaszrembacz.pl/examples/)
+- [Demos](https://dragndrop.lukaszrembacz.pl/examples/)
 
 ## Installation
 
 ```
-npm install @dnd/dropzone
+npm install @dragndrop/dropzone
 ```
 
 ## Usage

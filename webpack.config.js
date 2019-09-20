@@ -13,7 +13,7 @@ const configs = [
             // publicPath: httpDirAbsolutePath,
             filename: process.env.NODE_ENV === 'production' ? '[name].min.js' : '[name].js',
             libraryTarget: 'umd',
-            library: ['dnd', '[name]']
+            library: ['dragndrop', '[name]']
         },
         resolve: {
           extensions: ['.ts', '.js']
@@ -70,14 +70,14 @@ const configs = [
     {
         name: 'main-js-combined',
         entry: {
-            draggable: path.resolve(__dirname, './packages/dnd/index.ts')
+            draggable: path.resolve(__dirname, './packages/dragndrop/index.ts')
         },
         output: {
             path: path.resolve(__dirname, 'build'),
             // publicPath: httpDirAbsolutePath,
-            filename: process.env.NODE_ENV === 'production' ? 'dnd.min.js' : 'dnd.js',
+            filename: process.env.NODE_ENV === 'production' ? 'dragndrop.min.js' : 'dragndrop.js',
             libraryTarget: 'umd',
-            library: ['dnd']
+            library: ['dragndrop']
         },
         resolve: {
             extensions: ['.ts', '.js']

@@ -34,9 +34,9 @@ const toSlugCase = require('to-slug-case');
 const {spawnSync} = require('child_process');
 const {sync: globSync} = require('glob');
 
-const ALL_IN_ONE_PACKAGE = 'dnd';
+const ALL_IN_ONE_PACKAGE = 'dragndrop';
 const PACKAGES_DIRECTORY = path.resolve(__dirname, '../packages');
-const PKG_RE = /(?:dnd)|(?:[a-zA-Z\-]+)/;
+const PKG_RE = /(?:dragndrop)|(?:[a-zA-Z\-]+)/;
 
 const isValidCwd = (
     path.basename(process.cwd()) === ALL_IN_ONE_PACKAGE &&
@@ -45,6 +45,7 @@ const isValidCwd = (
 );
 
 if (!isValidCwd) {
+    console.log(path.basename(process.cwd()));
     console.error(
         'Invalid CWD. Please ensure you are running this from the root of the repo, and that you have run `npm run dist`'
     );

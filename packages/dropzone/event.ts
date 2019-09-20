@@ -1,5 +1,6 @@
 /// Event for dropzone elements.
-import {DragInfo} from '@dnd/draggable/drag-info';
+
+import {DragInfo} from '../draggable';
 
 export class DropzoneEvent<D> {
     /// The [Element] of the [Dropzone].
