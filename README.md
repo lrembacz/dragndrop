@@ -4,7 +4,7 @@ Drag and drop components provides simple API to handle drag and drop functionali
 
 Those components are using vanilla javascript and Material Components Base Component to make it easier to  adapt them into another frameworks.
 
-Drag and drop components are written in Typescript and are 
+Drag and drop components are written in Typescript and there are declarations available.
 
 > NOTE: Drag and drop components are a work in progress. There are possible some breaking changes. So use them with caution.
 

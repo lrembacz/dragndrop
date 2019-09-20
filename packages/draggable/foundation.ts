@@ -223,10 +223,10 @@ export class DraggableFoundation<D>  extends MDCFoundation<DraggableAdapter<D>> 
             if ('PointerEvent' in window) {
                 this._eventManagers.push(new PointerManager<D>(this));
             } else {
-                if ('TouchEvent' in window) {
-                    this._eventManagers.push(new TouchManager<D>(this));
-                }
                 this._eventManagers.push(new MouseManager<D>(this));
+            }
+            if ('TouchEvent' in window) {
+                this._eventManagers.push(new TouchManager<D>(this));
             }
         }
     }
