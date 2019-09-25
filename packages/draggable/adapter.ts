@@ -30,10 +30,10 @@ export interface DraggableAdapter<D> {
      * Notifies user action on draggable.
      */
     notifyAction(eventType: string, detail: any): void;
-    registerInteractionHandler<K extends any>(evtType: K, handler: SpecificEventListener<any>): void;
-    deregisterInteractionHandler<K extends any>(evtType: K, handler: SpecificEventListener<any>): void;
-    registerDocumentInteractionHandler<K extends any>(evtType: K, handler: SpecificEventListener<any>): void;
-    deregisterDocumentInteractionHandler<K extends any>(evtType: K, handler: SpecificEventListener<any>): void;
+    registerInteractionHandler<K extends any>(evtType: K, handler: SpecificEventListener<any>, options?: AddEventListenerOptions|boolean): void;
+    deregisterInteractionHandler<K extends any>(evtType: K, handler: SpecificEventListener<any>, options?: AddEventListenerOptions|boolean): void;
+    registerDocumentInteractionHandler<K extends any>(evtType: K, handler: SpecificEventListener<any>, passive?: boolean): void;
+    deregisterDocumentInteractionHandler<K extends any>(evtType: K, handler: SpecificEventListener<any>, passive?: boolean): void;
     getCurrentDrag(): DragInfo<D> | null;
     setCurrentDrag(currentDrag: DragInfo<D> | null): void;
     getRootElement(): Element;

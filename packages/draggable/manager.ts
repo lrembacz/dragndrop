@@ -22,6 +22,7 @@ export abstract class EventManager<D> {
         this.foundation = foundation;
         // Install the start listeners when constructed.
         this.installStart();
+        this.setTouchAction();
     }
 
     /// Installs the start listeners (e.g. mouseDown, touchStart, etc.).
@@ -57,8 +58,33 @@ export abstract class EventManager<D> {
         this.dragSubs.push(() => this.foundation.getAdapter().deregisterDocumentInteractionHandler('blur', blurHandler));
     }
 
+    setTouchAction() {
+        // Disable touch actions (scrolling, panning, zooming) depending on
+        // horizontalOnly / verticalOnly options.
+        if (this.foundation.axis === 'horizontal') {
+            // Only allow vertical scrolling, panning.
+            this.foundation.getAdapter().setStyle('touch-action', 'pan-y');
+        } else if (this.foundation.axis === 'vertical') {
+            // Only allow horizontal scrolling, panning.
+            this.foundation.getAdapter().setStyle('touch-action', 'pan-x');
+        } else {
+            if (this.foundation.touchAction === undefined) {
+                // No scrolling, panning.
+                this.foundation.getAdapter().setStyle('touch-action', 'none');
+            } else {
+                this.foundation.getAdapter().setStyle('touch-action', this.foundation.touchAction);
+            }
+        }
+    }
+
     /// Handles a start event (touchStart, mouseUp, etc.).
     handleStart(event: Event, position: Point): void {
+        // Prevents more dragging
+        if (this.foundation.getOnDragging() === true) {
+            return;
+        } else {
+            this.foundation.setOnDragging(true);
+        }
         // Initialize the drag info.
         // Note: the drag is not started on touchStart but after a first valid move.
         const dragInfo: DragInfo<D> = new DragInfo(
@@ -70,24 +96,6 @@ export abstract class EventManager<D> {
             this.foundation.axis
         );
         this.foundation.getAdapter().setCurrentDrag(dragInfo);
-
-        // Disable touch actions (scrolling, panning, zooming) depending on
-        // horizontalOnly / verticalOnly options.
-        if (this.foundation.axis === 'horizontal') {
-            // Only allow vertical scrolling, panning.
-            this.foundation.getAdapter().setStyle('touchAction', 'pan-y');
-        } else if (this.foundation.axis === 'vertical') {
-            // Only allow horizontal scrolling, panning.
-            this.foundation.getAdapter().setStyle('touchAction', 'pan-x');
-        } else {
-            if (this.foundation.touchAction === undefined) {
-                // No scrolling, panning.
-                this.foundation.getAdapter().setStyle('touchAction', 'none');
-            } else if ((this.foundation.touchAction === null)) {
-            } else {
-                this.foundation.getAdapter().setStyle('touchAction', this.foundation.touchAction);
-            }
-        }
 
         // Install listeners to detect a drag move, end, or cancel.
         this.installMove();
@@ -133,12 +141,11 @@ export abstract class EventManager<D> {
     /// Resets this [_EventManager] to its initial state. This means that all
     /// listeners are canceled except the listeners set up during [installStart].
     reset(): void {
+        this.foundation.setOnDragging(false);
+
         // Cancel drag subscriptions.
         this.dragSubs.forEach((sub) => sub());
         this.dragSubs.splice(0, this.dragSubs.length);
-
-        // Reset the touch action property.
-        this.foundation.getAdapter().setStyle('touchAction', null);
     }
 
     /// Cancels all listeners, including the listeners set up during [installStart].
@@ -148,6 +155,9 @@ export abstract class EventManager<D> {
         // Cancel start subscriptions.
         this.startSubs.forEach((sub) => sub());
         this.startSubs.splice(0, this.startSubs.length);
+
+        // Reset the touch action property.
+        this.foundation.getAdapter().setStyle('touch-action', null);
     }
 
     /// Determine a target using `document.elementFromPoint` via the provided [clientPosition].
@@ -250,12 +260,8 @@ export class TouchManager<D> extends EventManager<D> {
     installStart(): void {
         let touchStartHandler: any;
         this.foundation.getAdapter().registerInteractionHandler('touchstart',touchStartHandler = (event: Event) => {
-            // Fix for chrome
-            // When touch event occur it should not call mouseEvents at the same time
-            event.preventDefault();
-
             // Ignore if drag is already beeing handled.
-            if (this.foundation.getAdapter().getCurrentDrag() != null) {
+            if (this.foundation.getAdapter().getCurrentDrag() !== null) {
                 return;
             }
 

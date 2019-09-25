@@ -166,9 +166,9 @@ export class Draggable<D> extends MDCComponent<DraggableFoundation<D>> implement
             removeDocumentClass: (className) => document.documentElement.classList.remove(className),
             notifyAction: (eventType: string, detail?: any) => this.emit(eventType, detail, /** shouldBubble */ true),
             deregisterDocumentInteractionHandler: (evtType: any, handler: any, passive?: boolean) =>
-                document.documentElement.removeEventListener(evtType, handler, passive ? passive : applyPassive()),
+                document.documentElement.removeEventListener(evtType, handler, passive !== undefined ? passive : applyPassive()),
             registerDocumentInteractionHandler: (evtType: any, handler: any, passive?: boolean) =>
-                document.documentElement.addEventListener(evtType, handler, passive ? passive : applyPassive()),
+                document.documentElement.addEventListener(evtType, handler, passive !== undefined ? passive : applyPassive()),
             deregisterInteractionHandler: (evtType: any, handler: any, options?: AddEventListenerOptions|boolean) =>
                 this.unlisten(evtType, handler, options),
             registerInteractionHandler: (evtType: any, handler: any, options?: AddEventListenerOptions|boolean) =>

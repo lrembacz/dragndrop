@@ -95,10 +95,21 @@ export class DraggableFoundation<D>  extends MDCFoundation<DraggableAdapter<D>> 
 
     /// [touchAction] is string used as style for touch-action css property
     /// It is checked on dragStart to set given style to element
-    touchAction: string | null;
+    _touchAction: string | null;
 
     /// Managers for browser events.
     _eventManagers: Array<EventManager<D>> = [];
+
+    _onDragging: boolean = false;
+
+    get touchAction(): string | null {
+        return this._touchAction;
+    }
+
+    set touchAction(touchAction: string | null) {
+        this._touchAction = touchAction;
+        this._eventManagers.forEach(eventManager => eventManager.setTouchAction());
+    }
 
     getId() {
         return this.id;
@@ -106,6 +117,14 @@ export class DraggableFoundation<D>  extends MDCFoundation<DraggableAdapter<D>> 
 
     getAdapter() {
         return this.adapter_;
+    }
+
+    getOnDragging() {
+        return this._onDragging;
+    }
+
+    setOnDragging(onDragging: boolean) {
+        this._onDragging = onDragging;
     }
 
     /// Handles the drag start. The [moveEvent] might either be a
@@ -227,10 +246,10 @@ export class DraggableFoundation<D>  extends MDCFoundation<DraggableAdapter<D>> 
             if ('PointerEvent' in window) {
                 this._eventManagers.push(new PointerManager<D>(this));
             } else {
+                if ('TouchEvent' in window) {
+                    this._eventManagers.push(new TouchManager<D>(this));
+                }
                 this._eventManagers.push(new MouseManager<D>(this));
-            }
-            if ('TouchEvent' in window) {
-                this._eventManagers.push(new TouchManager<D>(this));
             }
         }
     }
