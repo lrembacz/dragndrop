@@ -55,6 +55,7 @@ Property | Value Type | Description
 `draggingClass` | String | Class which is set on element when dragging (`draggable--dragging` default)
 `draggingClassBody` | String | Class which is set on body element when dragging (`draggable--occurring` default)
 `minDragStartDistance` | number | Min distance to start dragStart state (`4` default)
+`touchAction` | String | null | touch-action property set on element whne drag is started (`undefined` default)
 
 Method Signature | Description
 --- | ---

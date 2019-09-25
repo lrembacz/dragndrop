@@ -18,6 +18,7 @@ export const DraggableAttachOptsInitial: DraggableAttachOpts<any> = {
     draggingClass: undefined,
     draggingClassBody: undefined,
     minDragStartDistance: undefined,
+    touchAction: undefined,
 };
 
 export class Draggable<D> extends MDCComponent<DraggableFoundation<D>> implements DraggableInterface {
@@ -58,6 +59,10 @@ export class Draggable<D> extends MDCComponent<DraggableFoundation<D>> implement
 
         if (opts.minDragStartDistance !== undefined) {
             draggable.minDragStartDistance = opts.minDragStartDistance;
+        }
+
+        if (opts.touchAction !== undefined) {
+            draggable.touchAction = opts.touchAction;
         }
 
         return draggable;
@@ -138,6 +143,14 @@ export class Draggable<D> extends MDCComponent<DraggableFoundation<D>> implement
 
     set draggingClassBody(draggingClassBody: string) {
         this.foundation_.draggingClassBody = draggingClassBody;
+    }
+
+    get touchAction() {
+        return this.foundation_.touchAction;
+    }
+
+    set touchAction(touchAction: string | null) {
+        this.foundation_.touchAction = touchAction;
     }
 
     initialSyncWithDOM() {

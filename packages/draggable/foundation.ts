@@ -93,6 +93,10 @@ export class DraggableFoundation<D>  extends MDCFoundation<DraggableAdapter<D>> 
     /// See [Draggable] constructor.
     avatar: Avatar;
 
+    /// [touchAction] is string used as style for touch-action css property
+    /// It is checked on dragStart to set given style to element
+    touchAction: string | null;
+
     /// Managers for browser events.
     _eventManagers: Array<EventManager<D>> = [];
 

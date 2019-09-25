@@ -22,19 +22,6 @@ export abstract class EventManager<D> {
         this.foundation = foundation;
         // Install the start listeners when constructed.
         this.installStart();
-
-        // Disable touch actions (scrolling, panning, zooming) depending on
-        // horizontalOnly / verticalOnly options.
-        if (foundation.axis === 'horizontal') {
-            // Only allow vertical scrolling, panning.
-            this.foundation.getAdapter().setStyle('touchAction', 'pan-y');
-        } else if (foundation.axis === 'vertical') {
-            // Only allow horizontal scrolling, panning.
-            this.foundation.getAdapter().setStyle('touchAction', 'pan-x');
-        } else {
-            // No scrolling, panning.
-            this.foundation.getAdapter().setStyle('touchAction', 'none');
-        }
     }
 
     /// Installs the start listeners (e.g. mouseDown, touchStart, etc.).
@@ -84,6 +71,24 @@ export abstract class EventManager<D> {
         );
         this.foundation.getAdapter().setCurrentDrag(dragInfo);
 
+        // Disable touch actions (scrolling, panning, zooming) depending on
+        // horizontalOnly / verticalOnly options.
+        if (this.foundation.axis === 'horizontal') {
+            // Only allow vertical scrolling, panning.
+            this.foundation.getAdapter().setStyle('touchAction', 'pan-y');
+        } else if (this.foundation.axis === 'vertical') {
+            // Only allow horizontal scrolling, panning.
+            this.foundation.getAdapter().setStyle('touchAction', 'pan-x');
+        } else {
+            if (this.foundation.touchAction === undefined) {
+                // No scrolling, panning.
+                this.foundation.getAdapter().setStyle('touchAction', 'none');
+            } else if ((this.foundation.touchAction === null)) {
+            } else {
+                this.foundation.getAdapter().setStyle('touchAction', this.foundation.touchAction);
+            }
+        }
+
         // Install listeners to detect a drag move, end, or cancel.
         this.installMove();
         this.installEnd();
@@ -131,6 +136,9 @@ export abstract class EventManager<D> {
         // Cancel drag subscriptions.
         this.dragSubs.forEach((sub) => sub());
         this.dragSubs.splice(0, this.dragSubs.length);
+
+        // Reset the touch action property.
+        this.foundation.getAdapter().setStyle('touchAction', null);
     }
 
     /// Cancels all listeners, including the listeners set up during [installStart].
@@ -140,9 +148,6 @@ export abstract class EventManager<D> {
         // Cancel start subscriptions.
         this.startSubs.forEach((sub) => sub());
         this.startSubs.splice(0, this.startSubs.length);
-
-        // Reset the touch action property.
-        this.foundation.getAdapter().setStyle('touchAction', null);
     }
 
     /// Determine a target using `document.elementFromPoint` via the provided [clientPosition].

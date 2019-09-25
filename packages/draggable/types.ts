@@ -12,6 +12,7 @@ export interface DraggableAttachOpts<T> {
     draggingClass?: string;
     draggingClassBody?: string;
     minDragStartDistance?: number;
+    touchAction?: string | null;
 }
 
 export interface DraggableInterface {
