@@ -138,6 +138,11 @@ export abstract class EventManager<D> {
         this.foundation.handleDragEnd(event, null, {cancelled: true});
     }
 
+    handleScroll(currentPosition: Point) {
+        const startPosition = this.foundation.getAdapter().getCurrentDrag().startPosition;
+        window.scroll(document.body.scrollLeft + (currentPosition.x - startPosition.x), document.body.scrollTop + (currentPosition.y - startPosition.y));
+    }
+
     /// Resets this [_EventManager] to its initial state. This means that all
     /// listeners are canceled except the listeners set up during [installStart].
     reset(): void {
@@ -302,6 +307,16 @@ export class TouchManager<D> extends EventManager<D> {
                 new Point(event.changedTouches[0].pageX, event.changedTouches[0].pageY),
                 new Point(event.changedTouches[0].clientX, event.changedTouches[0].clientY)
             );
+
+            if (this.foundation.customScroll === true) {
+                // Handle Custom Scroll
+                this.handleScroll(new Point(event.changedTouches[0].pageX, event.changedTouches[0].pageY));
+            } else if (typeof this.foundation.customScroll === 'function') {
+                this.foundation.customScroll(
+                    this.foundation.getAdapter().getCurrentDrag().startPosition,
+                    this.foundation.getAdapter().getCurrentDrag().position
+                );
+            }
 
             // Prevent touch scrolling.
             event.preventDefault();
@@ -485,6 +500,16 @@ export class PointerManager<D> extends EventManager<D> {
                 new Point(event.pageX, event.pageY),
                 new Point(event.clientX, event.clientY),
             );
+
+            if (this.foundation.customScroll === true) {
+                // Handle Custom Scroll
+                this.handleScroll(new Point(event.pageX, event.pageY));
+            } else if (typeof this.foundation.customScroll === 'function') {
+                this.foundation.customScroll(
+                    this.foundation.getAdapter().getCurrentDrag().startPosition,
+                    this.foundation.getAdapter().getCurrentDrag().position
+                );
+            }
         });
         this.dragSubs.push(() => this.foundation.getAdapter().deregisterDocumentInteractionHandler('pointermove', pointerMoveHandler));
     }

@@ -55,8 +55,8 @@ Property | Value Type | Description
 `draggingClass` | String | Class which is set on element when dragging (`draggable--dragging` default)
 `draggingClassBody` | String | Class which is set on body element when dragging (`draggable--occurring` default)
 `minDragStartDistance` | number | Min distance to start dragStart state (`4` default)
-`touchAction` | String | null | touch-action property set on element whne drag is started (`undefined` default)
-
+`touchAction` | String or null | Makes `touch-action` property set on element when drag is started (`undefined` default)
+`customScroll` | ((startPosition: Point, currentPosition: Point) => void) or boolean | Allows to specify customScroll behavior with function or when set with `false` prevents from custom scroll which is set by default 
 Method Signature | Description
 --- | ---
 `abort() => void` | Proxies to the foundation's `abort` method

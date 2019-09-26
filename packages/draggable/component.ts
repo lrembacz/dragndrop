@@ -3,7 +3,7 @@ import {DraggableFoundation} from './foundation';
 import {DragInfo} from './drag-info';
 import {Avatar} from './avatar';
 import {DraggableAdapter} from './adapter';
-import {Axis, DraggableAttachOpts, DraggableInterface} from './types';
+import {Axis, CustomScroll, DraggableAttachOpts, DraggableInterface} from './types';
 import {applyPassive} from '@material/dom/events';
 
 let _currentDrag: DragInfo<any> | null;
@@ -19,6 +19,7 @@ export const DraggableAttachOptsInitial: DraggableAttachOpts<any> = {
     draggingClassBody: undefined,
     minDragStartDistance: undefined,
     touchAction: undefined,
+    customScroll: undefined
 };
 
 export class Draggable<D> extends MDCComponent<DraggableFoundation<D>> implements DraggableInterface {
@@ -63,6 +64,10 @@ export class Draggable<D> extends MDCComponent<DraggableFoundation<D>> implement
 
         if (opts.touchAction !== undefined) {
             draggable.touchAction = opts.touchAction;
+        }
+
+        if (opts.customScroll !== undefined) {
+            draggable.customScroll = opts.customScroll;
         }
 
         return draggable;
@@ -151,6 +156,14 @@ export class Draggable<D> extends MDCComponent<DraggableFoundation<D>> implement
 
     set touchAction(touchAction: string | null) {
         this.foundation_.touchAction = touchAction;
+    }
+
+    get customScroll() {
+        return this.foundation_.customScroll;
+    }
+
+    set customScroll(customScroll: CustomScroll) {
+        this.foundation_.customScroll = customScroll;
     }
 
     initialSyncWithDOM() {
