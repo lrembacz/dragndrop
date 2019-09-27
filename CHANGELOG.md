@@ -7,6 +7,7 @@
 - `Draggable` gets another property: `touchAction` - sets style to touch-action when element starts drag
 - moved setting noTouch to new method from constructor to allow to change behavior on previously created `Draggable`
 - Added `customScroll` property to `Draggable` - allows to specify way to handle customScrolling when using drag on touch devices
+- Added polyfills to work on IE11
 
 # [0.0.2] Fix for chrome - TouchEvent + PointerEvent
 

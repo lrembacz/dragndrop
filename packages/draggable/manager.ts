@@ -208,7 +208,7 @@ export abstract class EventManager<D> {
     _recursiveShadowDomTarget(clientPosition: Point, target: EventTarget): EventTarget {
         // Retarget if target is a shadow host and has the specific attribute.
         // TODO: Debug this to work properly
-        if (target && (target as Element).shadowRoot !== null /*&& (target as Element).attributes.getNamedItem(DraggableFoundation.strings.SHADOW_DOM_RETARGET_ATTRIBUTE)*/) {
+        if (target && (target as Element).shadowRoot /*&& (target as Element).attributes.getNamedItem(DraggableFoundation.strings.SHADOW_DOM_RETARGET_ATTRIBUTE)*/) {
             const newTarget: Element | null = (target as Element)
                 .shadowRoot
                 .elementFromPoint(Math.round(clientPosition.x), Math.round(clientPosition.y));

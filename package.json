@@ -16,7 +16,7 @@
   "babel": {
     "presets": [
       [
-        "env",
+        "@babel/preset-env",
         {
           "modules": false
         }
@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.6.0",
+    "@babel/preset-env": "^7.6.2",
     "@babel/types": "^7.6.1",
     "@types/node": "^12.7.5",
     "babel-loader": "^8.0.6",
