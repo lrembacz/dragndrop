@@ -26,7 +26,11 @@ export class DragInfo<D> {
     /// Flag indicating if the drag started.
     started: boolean = false;
 
+    // Axis 'horizontal' | 'vertical'
     axis: Axis;
+
+    // Distance from cursorpointer to element's top left corner when dragging starts
+    shift: Point;
 
     constructor(
         draggableId: number,
@@ -35,6 +39,7 @@ export class DragInfo<D> {
         startPosition: Point,
         avatar: Avatar,
         axis: Axis = 'both',
+        shift: Point
     ) {
         this.draggableId = draggableId;
         this.element = element;
@@ -44,6 +49,7 @@ export class DragInfo<D> {
         this.axis = axis;
         // Initially set current position to startPosition.
         this._position = startPosition;
+        this.shift = shift;
     }
 
     /// The current position, constrained by the horizontal/vertical axis

@@ -78,7 +78,7 @@ export abstract class EventManager<D> {
     }
 
     /// Handles a start event (touchStart, mouseUp, etc.).
-    handleStart(event: Event, position: Point): void {
+    handleStart(event: Event, position: Point, shift: Point): void {
         // Prevents more dragging
         if (this.foundation.getOnDragging() === true) {
             return;
@@ -93,7 +93,8 @@ export abstract class EventManager<D> {
             this.foundation.data,
             position,
             this.foundation.avatar,
-            this.foundation.axis
+            this.foundation.axis,
+            shift
         );
         this.foundation.getAdapter().setCurrentDrag(dragInfo);
 
@@ -207,8 +208,7 @@ export abstract class EventManager<D> {
     /// Attribute for now is not used!
     _recursiveShadowDomTarget(clientPosition: Point, target: EventTarget): EventTarget {
         // Retarget if target is a shadow host and has the specific attribute.
-        // TODO: Debug this to work properly
-        if (target && (target as Element).shadowRoot /*&& (target as Element).attributes.getNamedItem(DraggableFoundation.strings.SHADOW_DOM_RETARGET_ATTRIBUTE)*/) {
+        if (target && (target as Element).shadowRoot && (target as Element).attributes.getNamedItem(DraggableFoundation.strings.SHADOW_DOM_RETARGET_ATTRIBUTE)) {
             const newTarget: Element | null = (target as Element)
                 .shadowRoot
                 .elementFromPoint(Math.round(clientPosition.x), Math.round(clientPosition.y));
@@ -280,7 +280,15 @@ export class TouchManager<D> extends EventManager<D> {
                 return;
             }
 
-            this.handleStart(event, new Point((event as TouchEvent).touches[0].pageX, (event as TouchEvent).touches[0].pageY));
+            const clientRects = (event.target as Element).getBoundingClientRect();
+            const shiftX = (event as TouchEvent).touches[0].clientX - clientRects.left;
+            const shiftY = (event as TouchEvent).touches[0].clientY - clientRects.top;
+
+            this.handleStart(
+                event,
+                new Point((event as TouchEvent).touches[0].pageX, (event as TouchEvent).touches[0].pageY),
+                new Point(shiftX, shiftY),
+            );
         });
 
         this.startSubs.push(() => this.foundation.getAdapter().deregisterInteractionHandler('touchstart', touchStartHandler));
@@ -407,7 +415,17 @@ export class MouseManager<D> extends EventManager<D> {
             ) {
                 event.preventDefault();
             }
-            this.handleStart(event, new Point((event as MouseEvent).pageX, (event as MouseEvent).pageY));
+
+            const clientRects = (event.target as Element).getBoundingClientRect();
+            const shiftX = (event as MouseEvent).clientX - clientRects.left;
+            const shiftY = (event as MouseEvent).clientY - clientRects.top;
+
+
+            this.handleStart(
+                event,
+                new Point((event as MouseEvent).pageX, (event as MouseEvent).pageY),
+                new Point(shiftX, shiftY),
+            );
         };
 
         this.foundation.getAdapter().registerInteractionHandler('mousedown', mouseDownHandler);
@@ -487,7 +505,16 @@ export class PointerManager<D> extends EventManager<D> {
             ) {
                 event.preventDefault();
             }
-            this.handleStart(event, new Point((event as PointerEvent).pageX, (event as PointerEvent).pageY));
+
+            const clientRects = (event.target as Element).getBoundingClientRect();
+            const shiftX = (event as PointerEvent).clientX - clientRects.left;
+            const shiftY = (event as PointerEvent).clientY - clientRects.top;
+
+            this.handleStart(
+                event,
+                new Point((event as PointerEvent).pageX, (event as PointerEvent).pageY),
+                new Point(shiftX, shiftY)
+            );
         });
         this.startSubs.push(() => this.foundation.getAdapter().deregisterInteractionHandler('pointerdown', pointerDownHandler));
     }

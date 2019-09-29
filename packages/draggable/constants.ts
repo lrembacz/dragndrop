@@ -9,7 +9,7 @@ const strings = {
     CUSTOM_DRAG_LEAVE: '_customDragLeave',
     CUSTOM_DROP: '_customDrop',
     CANCEL_STRING: 'input, textarea, button, select, option',
-    SHADOW_DOM_RETARGET_ATTRIBUTE: 'draggable-retarget',
+    SHADOW_DOM_RETARGET_ATTRIBUTE: 'draggable--retarget',
     DRAG_START_EVENT: 'onDragStart',
     DRAG_EVENT: 'onDrag',
     DRAG_END_EVENT: 'onDragEnd',
