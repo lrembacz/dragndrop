@@ -48,6 +48,7 @@ Events | Type | Data | Description
 Property | Value Type | Description
 --- | --- | ---
 `acceptor` | Acceptor | Data which is attached to draggable
+`exact` | boolean | Events from Draggable are stopped with stopPropagation() when exact is true.
 `overClass` | String | Class which is set on element when draggingOver (`dragging--over` default)
 `invalidClass` | String | Class which is set on element when draggingOver not accepted element (`dragging--invalid` default)
 

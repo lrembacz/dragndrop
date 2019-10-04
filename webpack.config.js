@@ -5,7 +5,12 @@ const configs = [
     {
         name: 'main-js-a-la-carte',
         entry: {
-            draggable: path.resolve(__dirname, './packages/draggable/index.ts'),
+            draggable: [
+                path.resolve(__dirname, './polyfills/matches.js'),
+                path.resolve(__dirname, './polyfills/mouse-event.js'),
+                path.resolve(__dirname, './polyfills/remove.js'),
+                path.resolve(__dirname, './packages/draggable/index.ts')
+            ],
             dropzone: path.resolve(__dirname, './packages/dropzone/index.ts')
         },
         output: {

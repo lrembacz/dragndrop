@@ -22,19 +22,7 @@ export abstract class EventManager<D> {
         this.foundation = foundation;
         // Install the start listeners when constructed.
         this.installStart();
-
-        // Disable touch actions (scrolling, panning, zooming) depending on
-        // horizontalOnly / verticalOnly options.
-        if (foundation.axis === 'horizontal') {
-            // Only allow vertical scrolling, panning.
-            this.foundation.getAdapter().setStyle('touchAction', 'pan-y');
-        } else if (foundation.axis === 'vertical') {
-            // Only allow horizontal scrolling, panning.
-            this.foundation.getAdapter().setStyle('touchAction', 'pan-x');
-        } else {
-            // No scrolling, panning.
-            this.foundation.getAdapter().setStyle('touchAction', 'none');
-        }
+        this.setTouchAction();
     }
 
     /// Installs the start listeners (e.g. mouseDown, touchStart, etc.).
@@ -70,8 +58,33 @@ export abstract class EventManager<D> {
         this.dragSubs.push(() => this.foundation.getAdapter().deregisterDocumentInteractionHandler('blur', blurHandler));
     }
 
+    setTouchAction() {
+        // Disable touch actions (scrolling, panning, zooming) depending on
+        // horizontalOnly / verticalOnly options.
+        if (this.foundation.axis === 'horizontal') {
+            // Only allow vertical scrolling, panning.
+            this.foundation.getAdapter().setStyle('touch-action', 'pan-y');
+        } else if (this.foundation.axis === 'vertical') {
+            // Only allow horizontal scrolling, panning.
+            this.foundation.getAdapter().setStyle('touch-action', 'pan-x');
+        } else {
+            if (this.foundation.touchAction === undefined) {
+                // No scrolling, panning.
+                this.foundation.getAdapter().setStyle('touch-action', 'none');
+            } else {
+                this.foundation.getAdapter().setStyle('touch-action', this.foundation.touchAction);
+            }
+        }
+    }
+
     /// Handles a start event (touchStart, mouseUp, etc.).
-    handleStart(event: Event, position: Point): void {
+    handleStart(event: Event, position: Point, shift: Point): void {
+        // Prevents more dragging
+        if (this.foundation.getOnDragging() === true) {
+            return;
+        } else {
+            this.foundation.setOnDragging(true);
+        }
         // Initialize the drag info.
         // Note: the drag is not started on touchStart but after a first valid move.
         const dragInfo: DragInfo<D> = new DragInfo(
@@ -80,7 +93,8 @@ export abstract class EventManager<D> {
             this.foundation.data,
             position,
             this.foundation.avatar,
-            this.foundation.axis
+            this.foundation.axis,
+            shift
         );
         this.foundation.getAdapter().setCurrentDrag(dragInfo);
 
@@ -125,9 +139,16 @@ export abstract class EventManager<D> {
         this.foundation.handleDragEnd(event, null, {cancelled: true});
     }
 
+    handleScroll(currentPosition: Point) {
+        const startPosition = this.foundation.getAdapter().getCurrentDrag().startPosition;
+        window.scroll(document.body.scrollLeft + (currentPosition.x - startPosition.x), document.body.scrollTop + (currentPosition.y - startPosition.y));
+    }
+
     /// Resets this [_EventManager] to its initial state. This means that all
     /// listeners are canceled except the listeners set up during [installStart].
     reset(): void {
+        this.foundation.setOnDragging(false);
+
         // Cancel drag subscriptions.
         this.dragSubs.forEach((sub) => sub());
         this.dragSubs.splice(0, this.dragSubs.length);
@@ -142,7 +163,7 @@ export abstract class EventManager<D> {
         this.startSubs.splice(0, this.startSubs.length);
 
         // Reset the touch action property.
-        this.foundation.getAdapter().setStyle('touchAction', null);
+        this.foundation.getAdapter().setStyle('touch-action', null);
     }
 
     /// Determine a target using `document.elementFromPoint` via the provided [clientPosition].
@@ -187,8 +208,7 @@ export abstract class EventManager<D> {
     /// Attribute for now is not used!
     _recursiveShadowDomTarget(clientPosition: Point, target: EventTarget): EventTarget {
         // Retarget if target is a shadow host and has the specific attribute.
-        // TODO: Debug this to work properly
-        if (target && (target as Element).shadowRoot !== null /*&& (target as Element).attributes.getNamedItem(DraggableFoundation.strings.SHADOW_DOM_RETARGET_ATTRIBUTE)*/) {
+        if (target && (target as Element).shadowRoot && (target as Element).attributes.getNamedItem(DraggableFoundation.strings.SHADOW_DOM_RETARGET_ATTRIBUTE)) {
             const newTarget: Element | null = (target as Element)
                 .shadowRoot
                 .elementFromPoint(Math.round(clientPosition.x), Math.round(clientPosition.y));
@@ -245,12 +265,8 @@ export class TouchManager<D> extends EventManager<D> {
     installStart(): void {
         let touchStartHandler: any;
         this.foundation.getAdapter().registerInteractionHandler('touchstart',touchStartHandler = (event: Event) => {
-            // Fix for chrome
-            // When touch event occur it should not call mouseEvents at the same time
-            event.preventDefault();
-
             // Ignore if drag is already beeing handled.
-            if (this.foundation.getAdapter().getCurrentDrag() != null) {
+            if (this.foundation.getAdapter().getCurrentDrag() !== null) {
                 return;
             }
 
@@ -264,7 +280,15 @@ export class TouchManager<D> extends EventManager<D> {
                 return;
             }
 
-            this.handleStart(event, new Point((event as TouchEvent).touches[0].pageX, (event as TouchEvent).touches[0].pageY));
+            const clientRects = (event.target as Element).getBoundingClientRect();
+            const shiftX = (event as TouchEvent).touches[0].clientX - clientRects.left;
+            const shiftY = (event as TouchEvent).touches[0].clientY - clientRects.top;
+
+            this.handleStart(
+                event,
+                new Point((event as TouchEvent).touches[0].pageX, (event as TouchEvent).touches[0].pageY),
+                new Point(shiftX, shiftY),
+            );
         });
 
         this.startSubs.push(() => this.foundation.getAdapter().deregisterInteractionHandler('touchstart', touchStartHandler));
@@ -291,6 +315,16 @@ export class TouchManager<D> extends EventManager<D> {
                 new Point(event.changedTouches[0].pageX, event.changedTouches[0].pageY),
                 new Point(event.changedTouches[0].clientX, event.changedTouches[0].clientY)
             );
+
+            if (this.foundation.customScroll === true) {
+                // Handle Custom Scroll
+                this.handleScroll(new Point(event.changedTouches[0].pageX, event.changedTouches[0].pageY));
+            } else if (typeof this.foundation.customScroll === 'function') {
+                this.foundation.customScroll(
+                    this.foundation.getAdapter().getCurrentDrag().startPosition,
+                    this.foundation.getAdapter().getCurrentDrag().position
+                );
+            }
 
             // Prevent touch scrolling.
             event.preventDefault();
@@ -381,7 +415,17 @@ export class MouseManager<D> extends EventManager<D> {
             ) {
                 event.preventDefault();
             }
-            this.handleStart(event, new Point((event as MouseEvent).pageX, (event as MouseEvent).pageY));
+
+            const clientRects = (event.target as Element).getBoundingClientRect();
+            const shiftX = (event as MouseEvent).clientX - clientRects.left;
+            const shiftY = (event as MouseEvent).clientY - clientRects.top;
+
+
+            this.handleStart(
+                event,
+                new Point((event as MouseEvent).pageX, (event as MouseEvent).pageY),
+                new Point(shiftX, shiftY),
+            );
         };
 
         this.foundation.getAdapter().registerInteractionHandler('mousedown', mouseDownHandler);
@@ -461,7 +505,16 @@ export class PointerManager<D> extends EventManager<D> {
             ) {
                 event.preventDefault();
             }
-            this.handleStart(event, new Point((event as PointerEvent).pageX, (event as PointerEvent).pageY));
+
+            const clientRects = (event.target as Element).getBoundingClientRect();
+            const shiftX = (event as PointerEvent).clientX - clientRects.left;
+            const shiftY = (event as PointerEvent).clientY - clientRects.top;
+
+            this.handleStart(
+                event,
+                new Point((event as PointerEvent).pageX, (event as PointerEvent).pageY),
+                new Point(shiftX, shiftY)
+            );
         });
         this.startSubs.push(() => this.foundation.getAdapter().deregisterInteractionHandler('pointerdown', pointerDownHandler));
     }
@@ -474,6 +527,16 @@ export class PointerManager<D> extends EventManager<D> {
                 new Point(event.pageX, event.pageY),
                 new Point(event.clientX, event.clientY),
             );
+
+            if (this.foundation.customScroll === true) {
+                // Handle Custom Scroll
+                this.handleScroll(new Point(event.pageX, event.pageY));
+            } else if (typeof this.foundation.customScroll === 'function') {
+                this.foundation.customScroll(
+                    this.foundation.getAdapter().getCurrentDrag().startPosition,
+                    this.foundation.getAdapter().getCurrentDrag().position
+                );
+            }
         });
         this.dragSubs.push(() => this.foundation.getAdapter().deregisterDocumentInteractionHandler('pointermove', pointerMoveHandler));
     }

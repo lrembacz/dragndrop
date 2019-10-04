@@ -6,7 +6,7 @@ import {_DragEventDispatcher} from './dispatcher';
 import {AnimationHelper} from './utils/animation';
 import {Avatar} from './avatar';
 import {cssClasses, strings, numbers} from './constants';
-import {Axis} from './types';
+import {Axis, CustomScroll} from './types';
 
 /// Counter to generate a unique id for each instance.
 let idCounter: number = 0;
@@ -93,8 +93,27 @@ export class DraggableFoundation<D>  extends MDCFoundation<DraggableAdapter<D>> 
     /// See [Draggable] constructor.
     avatar: Avatar;
 
+    // [customScroll] is function or boolean which allow to handle custom scrolling
+    // while dragging on Touch Devices
+    customScroll: CustomScroll = true;
+
+    /// [touchAction] is string used as style for touch-action css property
+    /// It is checked on dragStart to set given style to element
+    _touchAction: string | null;
+
     /// Managers for browser events.
     _eventManagers: Array<EventManager<D>> = [];
+
+    _onDragging: boolean = false;
+
+    get touchAction(): string | null {
+        return this._touchAction;
+    }
+
+    set touchAction(touchAction: string | null) {
+        this._touchAction = touchAction;
+        this._eventManagers.forEach(eventManager => eventManager.setTouchAction());
+    }
 
     getId() {
         return this.id;
@@ -102,6 +121,14 @@ export class DraggableFoundation<D>  extends MDCFoundation<DraggableAdapter<D>> 
 
     getAdapter() {
         return this.adapter_;
+    }
+
+    getOnDragging() {
+        return this._onDragging;
+    }
+
+    setOnDragging(onDragging: boolean) {
+        this._onDragging = onDragging;
     }
 
     /// Handles the drag start. The [moveEvent] might either be a
@@ -223,10 +250,10 @@ export class DraggableFoundation<D>  extends MDCFoundation<DraggableAdapter<D>> 
             if ('PointerEvent' in window) {
                 this._eventManagers.push(new PointerManager<D>(this));
             } else {
+                if ('TouchEvent' in window) {
+                    this._eventManagers.push(new TouchManager<D>(this));
+                }
                 this._eventManagers.push(new MouseManager<D>(this));
-            }
-            if ('TouchEvent' in window) {
-                this._eventManagers.push(new TouchManager<D>(this));
             }
         }
     }

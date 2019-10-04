@@ -9,6 +9,7 @@ import {DraggableFoundation} from '@dragndrop/draggable/foundation';
 
 export const DropzoneAttachOptsInitial: DropzoneAttachOpts = {
     acceptor: undefined,
+    exact: undefined,
     overClass: undefined,
     invalidClass: undefined,
 };
@@ -19,6 +20,10 @@ export class Dropzone extends MDCComponent<DropzoneFoundation> {
 
         if (opts.acceptor !== undefined) {
             dropzone.acceptor = opts.acceptor;
+        }
+
+        if (opts.exact !== undefined) {
+            dropzone.exact = opts.exact;
         }
 
         if (opts.overClass !== undefined) {
@@ -58,20 +63,32 @@ export class Dropzone extends MDCComponent<DropzoneFoundation> {
 
     getDefaultFoundation() {
         const adapter: DropzoneAdapter = {
+            hasClass: (className) => this.root_.classList.contains(className),
+            addClass: (className) => this.root_.classList.add(className),
+            removeClass: (className) => this.root_.classList.remove(className),
             notifyAction: (eventType: string, detail?: any) => this.emit(eventType, detail, /** shouldBubble */ true),
             deregisterDocumentInteractionHandler: (evtType: any, handler: any, passive?: boolean) =>
-                document.documentElement.removeEventListener(evtType, handler, applyPassive()),
+                document.documentElement.removeEventListener(evtType, handler, passive ? passive : applyPassive()),
             registerDocumentInteractionHandler: (evtType: any, handler: any, passive?: boolean) =>
-                document.documentElement.addEventListener(evtType, handler, applyPassive()),
+                document.documentElement.addEventListener(evtType, handler, passive ? passive : applyPassive()),
             deregisterInteractionHandler: (evtType: any, handler: any) =>
                 (this.root_ as HTMLElement).removeEventListener(evtType, handler),
             registerInteractionHandler: (evtType: any, handler: any) =>
                 (this.root_ as HTMLElement).addEventListener(evtType, handler),
+            getRootElement: () => this.root_,
         };
         return new DropzoneFoundation(adapter);
     }
 
     root_: Element; // assigned in MDCComponent constructor
+
+    get exact() {
+        return this.foundation_.exact;
+    }
+
+    set exact(exact: boolean) {
+        this.foundation_.exact = exact;
+    }
 
     get acceptor() {
         return this.foundation_.acceptor;

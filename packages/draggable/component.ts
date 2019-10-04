@@ -3,7 +3,7 @@ import {DraggableFoundation} from './foundation';
 import {DragInfo} from './drag-info';
 import {Avatar} from './avatar';
 import {DraggableAdapter} from './adapter';
-import {Axis, DraggableAttachOpts, DraggableInterface} from './types';
+import {Axis, CustomScroll, DraggableAttachOpts, DraggableInterface} from './types';
 import {applyPassive} from '@material/dom/events';
 
 let _currentDrag: DragInfo<any> | null;
@@ -18,6 +18,8 @@ export const DraggableAttachOptsInitial: DraggableAttachOpts<any> = {
     draggingClass: undefined,
     draggingClassBody: undefined,
     minDragStartDistance: undefined,
+    touchAction: undefined,
+    customScroll: undefined
 };
 
 export class Draggable<D> extends MDCComponent<DraggableFoundation<D>> implements DraggableInterface {
@@ -58,6 +60,14 @@ export class Draggable<D> extends MDCComponent<DraggableFoundation<D>> implement
 
         if (opts.minDragStartDistance !== undefined) {
             draggable.minDragStartDistance = opts.minDragStartDistance;
+        }
+
+        if (opts.touchAction !== undefined) {
+            draggable.touchAction = opts.touchAction;
+        }
+
+        if (opts.customScroll !== undefined) {
+            draggable.customScroll = opts.customScroll;
         }
 
         return draggable;
@@ -140,6 +150,22 @@ export class Draggable<D> extends MDCComponent<DraggableFoundation<D>> implement
         this.foundation_.draggingClassBody = draggingClassBody;
     }
 
+    get touchAction() {
+        return this.foundation_.touchAction;
+    }
+
+    set touchAction(touchAction: string | null) {
+        this.foundation_.touchAction = touchAction;
+    }
+
+    get customScroll() {
+        return this.foundation_.customScroll;
+    }
+
+    set customScroll(customScroll: CustomScroll) {
+        this.foundation_.customScroll = customScroll;
+    }
+
     initialSyncWithDOM() {
         this.foundation_.initEventManagers();
     }
@@ -153,9 +179,9 @@ export class Draggable<D> extends MDCComponent<DraggableFoundation<D>> implement
             removeDocumentClass: (className) => document.documentElement.classList.remove(className),
             notifyAction: (eventType: string, detail?: any) => this.emit(eventType, detail, /** shouldBubble */ true),
             deregisterDocumentInteractionHandler: (evtType: any, handler: any, passive?: boolean) =>
-                document.documentElement.removeEventListener(evtType, handler, passive ? passive : applyPassive()),
+                document.documentElement.removeEventListener(evtType, handler, passive !== undefined ? passive : applyPassive()),
             registerDocumentInteractionHandler: (evtType: any, handler: any, passive?: boolean) =>
-                document.documentElement.addEventListener(evtType, handler, passive ? passive : applyPassive()),
+                document.documentElement.addEventListener(evtType, handler, passive !== undefined ? passive : applyPassive()),
             deregisterInteractionHandler: (evtType: any, handler: any, options?: AddEventListenerOptions|boolean) =>
                 this.unlisten(evtType, handler, options),
             registerInteractionHandler: (evtType: any, handler: any, options?: AddEventListenerOptions|boolean) =>
