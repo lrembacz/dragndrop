@@ -1,4 +1,4 @@
-import '../../polyfills/remove.js';
+import './utils/remove.js';
 import {AnimationHelper} from './utils/animation';
 import {Point} from './utils/point';
 
