@@ -1,3 +1,4 @@
+import '../../polyfills/mouse-event.js';
 import {DraggableAdapter} from './adapter';
 import {MDCFoundation} from '@material/base/foundation';
 import {EventManager, MouseManager, PointerManager,  TouchManager} from './manager';
