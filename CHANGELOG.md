@@ -1,5 +1,7 @@
 # Change Log
 
+# [0.1.2] Fix to polyfills
+
 # [0.1.0] New `exact` property added to Dropzone component + elementRoot is on DropzoneAdapter + Draggable changes
 - `exact` makes stopPropagation() on events from Draggable to prevent form bubbling on parents
 - new method is added on DropzoneAdapter `getRootElement()` provides way to get element 
