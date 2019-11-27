@@ -141,7 +141,11 @@ export abstract class EventManager<D> {
 
     handleScroll(currentPosition: Point) {
         const startPosition = this.foundation.getAdapter().getCurrentDrag().startPosition;
-        window.scroll(document.body.scrollLeft + (currentPosition.x - startPosition.x), document.body.scrollTop + (currentPosition.y - startPosition.y));
+        this.foundation.getAdapter().scroll(
+            document.body.scrollLeft + (currentPosition.x - startPosition.x),
+            document.body.scrollTop + (currentPosition.y - startPosition.y),
+            'smooth'
+        );
     }
 
     /// Resets this [_EventManager] to its initial state. This means that all

@@ -30,6 +30,8 @@ export interface DraggableAdapter<D> {
      * Notifies user action on draggable.
      */
     notifyAction(eventType: string, detail: any): void;
+    notifyTarget(target: EventTarget, eventName: string, data: any, options?: any): void;
+    scroll(left: number, top: number, behavior: "auto" | "smooth"): void;
     registerInteractionHandler<K extends any>(evtType: K, handler: SpecificEventListener<any>, options?: AddEventListenerOptions|boolean): void;
     deregisterInteractionHandler<K extends any>(evtType: K, handler: SpecificEventListener<any>, options?: AddEventListenerOptions|boolean): void;
     registerDocumentInteractionHandler<K extends any>(evtType: K, handler: SpecificEventListener<any>, passive?: boolean): void;

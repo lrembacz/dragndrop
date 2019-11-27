@@ -6,7 +6,7 @@ import {DraggableFoundation} from './foundation';
 
 export class _DragEventDispatcher {
     /// Keeps track of the previous target to be able to fire dragLeave events on it.
-    static previousTarget: EventTarget;
+    static previousTarget: EventTarget = null;
 
     /// Dispatches dragEnter, dragOver, and dragLeave events.
     ///
@@ -16,46 +16,44 @@ export class _DragEventDispatcher {
 
         // Sometimes the target is null (e.g. when user drags over buttons on
         // android). Ignore it.
-        if (target == null) {
+        if (target === null) {
             return;
         }
 
         if (this.previousTarget === target) {
             // Moved on the same element --> dispatch dragOver.
-            const dragOverEvent: MouseEvent = new MouseEvent(DraggableFoundation.strings.CUSTOM_DRAG_OVER, {bubbles: true});
-            (dragOverEvent as any).data = {
-                dragInfo: draggableFoundation.getAdapter().getCurrentDrag()
-            };
-            // const dragOverEvent: CustomEvent = new CustomEvent(DraggableFoundation.strings.CUSTOM_DRAG_OVER);
-            target.dispatchEvent(dragOverEvent);
+            draggableFoundation.getAdapter().notifyTarget(
+                target,
+                DraggableFoundation.strings.CUSTOM_DRAG_OVER,
+                {dragInfo: draggableFoundation.getAdapter().getCurrentDrag()},
+                null
+            );
         } else {
             // Entered a new element --> fire dragEnter of new element.
-            const dragEnterEvent: MouseEvent = new MouseEvent(DraggableFoundation.strings.CUSTOM_DRAG_ENTER, {relatedTarget: this.previousTarget, bubbles: true});
-            (dragEnterEvent as any).data = {
-                dragInfo: draggableFoundation.getAdapter().getCurrentDrag()
-            };
-            // const dragEnterEvent: CustomEvent = new CustomEvent(DraggableFoundation.strings.CUSTOM_DRAG_ENTER, dragEnterEventInit);
-            target.dispatchEvent(dragEnterEvent);
+            draggableFoundation.getAdapter().notifyTarget(
+                target,
+                DraggableFoundation.strings.CUSTOM_DRAG_ENTER,
+                {dragInfo: draggableFoundation.getAdapter().getCurrentDrag()},
+                {relatedTarget: this.previousTarget}
+            );
 
             // Fire dragLeave of old element (if there is one).
-            if (this.previousTarget != null) {
-
-                const dragLeaveEvent: MouseEvent = new MouseEvent(DraggableFoundation.strings.CUSTOM_DRAG_LEAVE, {relatedTarget: target, bubbles: true});
-                (dragLeaveEvent as any).data = {
-                    dragInfo: draggableFoundation.getAdapter().getCurrentDrag()
-                };
-                // const dragLeaveEvent: CustomEvent = new CustomEvent(DraggableFoundation.strings.CUSTOM_DRAG_LEAVE);
-                this.previousTarget.dispatchEvent(dragLeaveEvent);
+            if (this.previousTarget !== null) {
+                draggableFoundation.getAdapter().notifyTarget(
+                    this.previousTarget,
+                    DraggableFoundation.strings.CUSTOM_DRAG_LEAVE,
+                    {dragInfo: draggableFoundation.getAdapter().getCurrentDrag()},
+                    {relatedTarget: target}
+                );
             }
 
             // Also fire the first dragOver event for the new element.
-            const dragOverEvent: MouseEvent = new MouseEvent(DraggableFoundation.strings.CUSTOM_DRAG_OVER, {bubbles: true});
-            (dragOverEvent as any).data = {
-                dragInfo: draggableFoundation.getAdapter().getCurrentDrag()
-            };
-            // const dragOverEvent: CustomEvent = new CustomEvent(DraggableFoundation.strings.CUSTOM_DRAG_OVER);
-            target.dispatchEvent(dragOverEvent);
-
+            draggableFoundation.getAdapter().notifyTarget(
+                target,
+                DraggableFoundation.strings.CUSTOM_DRAG_OVER,
+                {dragInfo: draggableFoundation.getAdapter().getCurrentDrag()},
+                null
+            );
             this.previousTarget = target;
         }
     }
@@ -67,30 +65,28 @@ export class _DragEventDispatcher {
     static dispatchDrop<D>(draggableFoundation: DraggableFoundation<D>, target: EventTarget): void {
         // Sometimes the target is null (e.g. when user drags over buttons on
         // android). Ignore it.
-        if (target == null) {
+        if (target === null) {
             return;
         }
-
-        const dropEvent: MouseEvent = new MouseEvent(DraggableFoundation.strings.CUSTOM_DROP, {bubbles: true});
-        (dropEvent as any).data = {
-            dragInfo: draggableFoundation.getAdapter().getCurrentDrag()
-        };
-        // const dropEvent: CustomEvent = new CustomEvent(DraggableFoundation.strings.CUSTOM_DROP);
-        target.dispatchEvent(dropEvent);
-
+        draggableFoundation.getAdapter().notifyTarget(
+            target,
+            DraggableFoundation.strings.CUSTOM_DROP,
+            {dragInfo: draggableFoundation.getAdapter().getCurrentDrag()},
+            null
+        );
         this.reset(draggableFoundation);
     }
 
     /// Must be called when drag ended to fire a last dragLeave event.
     static reset<D>(draggableFoundation: DraggableFoundation<D>): void {
         // Fire a last dragLeave.
-        if (this.previousTarget != null) {
-            const dragLeaveEvent: MouseEvent = new MouseEvent(DraggableFoundation.strings.CUSTOM_DRAG_LEAVE, {bubbles: true});
-            (dragLeaveEvent as any).data = {
-                dragInfo: draggableFoundation.getAdapter().getCurrentDrag()
-            };
-            // const dragLeaveEvent: CustomEvent = new CustomEvent(DraggableFoundation.strings.CUSTOM_DRAG_LEAVE);
-            this.previousTarget.dispatchEvent(dragLeaveEvent);
+        if (this.previousTarget !== null) {
+            draggableFoundation.getAdapter().notifyTarget(
+                this.previousTarget,
+                DraggableFoundation.strings.CUSTOM_DRAG_LEAVE,
+                {dragInfo: draggableFoundation.getAdapter().getCurrentDrag()},
+                null
+            );
             this.previousTarget = null;
         }
     }

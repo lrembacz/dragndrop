@@ -1,4 +1,3 @@
-import './utils/mouse-event.js';
 import {DraggableAdapter} from './adapter';
 import {MDCFoundation} from '@material/base/foundation';
 import {EventManager, MouseManager, PointerManager,  TouchManager} from './manager';
@@ -37,6 +36,8 @@ export class DraggableFoundation<D>  extends MDCFoundation<DraggableAdapter<D>> 
             removeDocumentClass: () => undefined,
             hasClass: () => undefined,
             notifyAction: () => undefined,
+            notifyTarget: () => undefined,
+            scroll: () => undefined,
             deregisterDocumentInteractionHandler: () => undefined,
             registerDocumentInteractionHandler: () => undefined,
             deregisterInteractionHandler: () => undefined,

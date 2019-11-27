@@ -1,6 +1,6 @@
 {
   "name": "@dragndrop/draggable",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Draggable component",
   "license": "MIT",
   "main": "dist/draggable.js",
@@ -20,6 +20,8 @@
   "dependencies": {
     "@material/base": "^3.1.0",
     "@material/dom": "^3.1.0",
+    "@types/smoothscroll-polyfill": "^0.3.1",
+    "smoothscroll-polyfill": "^0.4.4",
     "tslib": "^1.9.3"
   },
   "publishConfig": {

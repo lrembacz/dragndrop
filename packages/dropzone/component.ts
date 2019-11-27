@@ -37,6 +37,10 @@ export class Dropzone extends MDCComponent<DropzoneFoundation> {
         return dropzone;
     }
 
+    initialize(..._args: any[]): void {
+        this.root_.__dropzone__ = this;
+    }
+
     private handleDragEnter_: CustomEventListener<Event>; // assigned in initialSyncWithDOM()
     private handleDragOver_: CustomEventListener<Event>; // assigned in initialSyncWithDOM()
     private handleDragLeave_: CustomEventListener<Event>; // assigned in initialSyncWithDOM()
@@ -59,6 +63,7 @@ export class Dropzone extends MDCComponent<DropzoneFoundation> {
         this.unlisten(DraggableFoundation.strings.CUSTOM_DRAG_OVER, this.handleDragOver_);
         this.unlisten(DraggableFoundation.strings.CUSTOM_DRAG_LEAVE, this.handleDragLeave_);
         this.unlisten(DraggableFoundation.strings.CUSTOM_DROP, this.handleDrop_);
+        delete this.root_.__dropzone__;
     }
 
     getDefaultFoundation() {

@@ -1,5 +1,7 @@
 # Change Log
 
+# [0.1.3] Smoothscroll polyfill  + changes to draggable init and dropzone init
+
 # [0.1.2] Fix to polyfills
 
 # [0.1.0] New `exact` property added to Dropzone component + elementRoot is on DropzoneAdapter + Draggable changes

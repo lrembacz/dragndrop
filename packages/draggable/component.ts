@@ -1,3 +1,5 @@
+import './utils/mouse-event.js';
+import smoothscroll from 'smoothscroll-polyfill';
 import {MDCComponent} from '@material/base/component';
 import {DraggableFoundation} from './foundation';
 import {DragInfo} from './drag-info';
@@ -5,6 +7,10 @@ import {Avatar} from './avatar';
 import {DraggableAdapter} from './adapter';
 import {Axis, CustomScroll, DraggableAttachOpts, DraggableInterface} from './types';
 import {applyPassive} from '@material/dom/events';
+
+if (typeof window !== 'undefined') {
+    smoothscroll.polyfill();
+}
 
 let _currentDrag: DragInfo<any> | null;
 
@@ -72,6 +78,11 @@ export class Draggable<D> extends MDCComponent<DraggableFoundation<D>> implement
 
         return draggable;
     }
+
+    initialize(..._args: any[]): void {
+        this.root_.__draggable__ = this;
+    }
+
     root_: Element; // assigned in MDCComponent constructor
 
     get _id() {
@@ -178,6 +189,12 @@ export class Draggable<D> extends MDCComponent<DraggableFoundation<D>> implement
             addDocumentClass: (className) => document.documentElement.classList.add(className),
             removeDocumentClass: (className) => document.documentElement.classList.remove(className),
             notifyAction: (eventType: string, detail?: any) => this.emit(eventType, detail, /** shouldBubble */ true),
+            notifyTarget: (eventTarget: EventTarget, eventName: string, data: any, options?: any) => {
+                const event = new MouseEvent(eventName, options);
+                (event as any).data = data;
+                eventTarget.dispatchEvent(event);
+            },
+            scroll: (left, top, behavior) => window.scroll({left, top, behavior}),
             deregisterDocumentInteractionHandler: (evtType: any, handler: any, passive?: boolean) =>
                 document.documentElement.removeEventListener(evtType, handler, passive !== undefined ? passive : applyPassive()),
             registerDocumentInteractionHandler: (evtType: any, handler: any, passive?: boolean) =>
@@ -201,5 +218,6 @@ export class Draggable<D> extends MDCComponent<DraggableFoundation<D>> implement
 
     destroy(): void {
         this.foundation_.destroy();
+        delete this.root_.__draggable__;
     }
 }

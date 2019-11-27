@@ -1,5 +1,12 @@
 import {Avatar} from './avatar';
 import {Point} from './utils/point';
+import {Draggable} from './component';
+
+declare global {
+    interface Element {
+        __draggable__: Draggable<any>;
+    }
+}
 
 export type Axis = 'both' | 'horizontal' | 'vertical';
 
