@@ -1,9 +1,8 @@
 import {Acceptor} from './acceptor';
-import {Dropzone} from './component';
 
 declare global {
     interface Element {
-        __dropzone__: Dropzone;
+        __dropzone__: any;
     }
 }
 

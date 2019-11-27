@@ -16,17 +16,17 @@ export class _DragEventDispatcher {
 
         // Sometimes the target is null (e.g. when user drags over buttons on
         // android). Ignore it.
-        if (target === null) {
+        if (target == null) {
             return;
         }
 
-        if (this.previousTarget === target) {
+        if (this.previousTarget == target) {
             // Moved on the same element --> dispatch dragOver.
             draggableFoundation.getAdapter().notifyTarget(
                 target,
                 DraggableFoundation.strings.CUSTOM_DRAG_OVER,
                 {dragInfo: draggableFoundation.getAdapter().getCurrentDrag()},
-                null
+                {bubbles: true}
             );
         } else {
             // Entered a new element --> fire dragEnter of new element.
@@ -34,16 +34,16 @@ export class _DragEventDispatcher {
                 target,
                 DraggableFoundation.strings.CUSTOM_DRAG_ENTER,
                 {dragInfo: draggableFoundation.getAdapter().getCurrentDrag()},
-                {relatedTarget: this.previousTarget}
+                {relatedTarget: this.previousTarget, bubbles: true}
             );
 
             // Fire dragLeave of old element (if there is one).
-            if (this.previousTarget !== null) {
+            if (this.previousTarget != null) {
                 draggableFoundation.getAdapter().notifyTarget(
                     this.previousTarget,
                     DraggableFoundation.strings.CUSTOM_DRAG_LEAVE,
                     {dragInfo: draggableFoundation.getAdapter().getCurrentDrag()},
-                    {relatedTarget: target}
+                    {relatedTarget: target, bubbles: true}
                 );
             }
 
@@ -52,7 +52,7 @@ export class _DragEventDispatcher {
                 target,
                 DraggableFoundation.strings.CUSTOM_DRAG_OVER,
                 {dragInfo: draggableFoundation.getAdapter().getCurrentDrag()},
-                null
+                {bubbles: true}
             );
             this.previousTarget = target;
         }
@@ -65,14 +65,14 @@ export class _DragEventDispatcher {
     static dispatchDrop<D>(draggableFoundation: DraggableFoundation<D>, target: EventTarget): void {
         // Sometimes the target is null (e.g. when user drags over buttons on
         // android). Ignore it.
-        if (target === null) {
+        if (target == null) {
             return;
         }
         draggableFoundation.getAdapter().notifyTarget(
             target,
             DraggableFoundation.strings.CUSTOM_DROP,
             {dragInfo: draggableFoundation.getAdapter().getCurrentDrag()},
-            null
+            {bubbles: true}
         );
         this.reset(draggableFoundation);
     }
@@ -80,12 +80,12 @@ export class _DragEventDispatcher {
     /// Must be called when drag ended to fire a last dragLeave event.
     static reset<D>(draggableFoundation: DraggableFoundation<D>): void {
         // Fire a last dragLeave.
-        if (this.previousTarget !== null) {
+        if (this.previousTarget != null) {
             draggableFoundation.getAdapter().notifyTarget(
                 this.previousTarget,
                 DraggableFoundation.strings.CUSTOM_DRAG_LEAVE,
                 {dragInfo: draggableFoundation.getAdapter().getCurrentDrag()},
-                null
+                {bubbles: true}
             );
             this.previousTarget = null;
         }
