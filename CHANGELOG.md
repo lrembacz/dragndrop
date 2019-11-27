@@ -1,6 +1,6 @@
 # Change Log
 
-# [0.1.3] Smoothscroll polyfill  + changes to draggable init and dropzone init
+# [0.1.4] Smoothscroll polyfill  + changes to draggable init and dropzone init + fix
 
 # [0.1.2] Fix to polyfills
 
