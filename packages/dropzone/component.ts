@@ -12,6 +12,7 @@ export const DropzoneAttachOptsInitial: DropzoneAttachOpts = {
     exact: undefined,
     overClass: undefined,
     invalidClass: undefined,
+    allowOnChild: undefined,
 };
 
 export class Dropzone extends MDCComponent<DropzoneFoundation> {
@@ -32,6 +33,10 @@ export class Dropzone extends MDCComponent<DropzoneFoundation> {
 
         if (opts.invalidClass !== undefined) {
             dropzone.invalidClass = opts.invalidClass;
+        }
+
+        if (opts.allowOnChild !== undefined) {
+            dropzone.allowOnChild = opts.allowOnChild;
         }
 
         return dropzone;
@@ -117,6 +122,14 @@ export class Dropzone extends MDCComponent<DropzoneFoundation> {
 
     set invalidClass(invalidClass: string) {
         this.foundation_.invalidClass = invalidClass;
+    }
+
+    get allowOnChild() {
+        return this.foundation_.allowOnChild;
+    }
+
+    set allowOnChild(allowOnChild) {
+        this.foundation_.allowOnChild = allowOnChild;
     }
 
     handleDragEnterEvent_(evt: Event) {

@@ -1,6 +1,6 @@
 {
   "name": "@dragndrop/dropzone",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Dropzone component",
   "license": "MIT",
   "main": "dist/dropzone.js",
@@ -20,7 +20,7 @@
   "dependencies": {
     "@material/base": "^3.1.0",
     "@material/dom": "^3.1.0",
-    "@dragndrop/draggable": "^0.1.4",
+    "@dragndrop/draggable": "^0.1.5",
     "tslib": "^1.9.3"
   },
   "publishConfig": {

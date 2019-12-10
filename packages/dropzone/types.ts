@@ -11,4 +11,5 @@ export interface DropzoneAttachOpts {
     exact?: boolean;
     overClass?: string;
     invalidClass?: string;
+    allowOnChild?: boolean;
 }

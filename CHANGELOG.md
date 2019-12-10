@@ -1,5 +1,7 @@
 # Change Log
 
+# [0.1.5] New `allowOnChild` property added to Dropzone component
+
 # [0.1.4] Smoothscroll polyfill  + changes to draggable init and dropzone init + fix
 
 # [0.1.2] Fix to polyfills

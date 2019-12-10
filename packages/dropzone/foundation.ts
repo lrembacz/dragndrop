@@ -47,6 +47,8 @@ export class DropzoneFoundation extends MDCFoundation<DropzoneAdapter> {
     /// dragged over it. See [Dropzone] constructor.
     invalidClass: string = DropzoneFoundation.cssClasses.INVALID_CLASS;
 
+    allowOnChild: boolean = false;
+
     setAcceptor(acceptor: Acceptor) {
         this.acceptor = acceptor;
     }
@@ -59,9 +61,11 @@ export class DropzoneFoundation extends MDCFoundation<DropzoneAdapter> {
         // Only handle dragEnter if user moved from outside of element into the
         // element. That means we ignore it if user is coming from a child element.
         // TODO: Debug this... as it is not working for every use case
-        if ((event as MouseEvent).relatedTarget !== null &&
-            this.adapter_.getRootElement().contains((event as MouseEvent).relatedTarget as Element)) {
-            return;
+        if (!this.allowOnChild) {
+            if ((event as MouseEvent).relatedTarget !== null &&
+                this.adapter_.getRootElement().contains((event as MouseEvent).relatedTarget as Element)) {
+                return;
+            }
         }
 
         // Test if the current draggable is accepted by this dropzone. If there is
@@ -111,9 +115,11 @@ export class DropzoneFoundation extends MDCFoundation<DropzoneAdapter> {
         // Only handle dragLeave if user moved from inside of element to the
         // outside. That means we ignore it if user is moving to a child element.
         // TODO: Debug this... as it is not working for every use case
-        if ((event as MouseEvent).relatedTarget != null &&
-            this.adapter_.getRootElement().contains((event as MouseEvent).relatedTarget as Element)) {
-            return;
+        if (!this.allowOnChild) {
+            if ((event as MouseEvent).relatedTarget != null &&
+                this.adapter_.getRootElement().contains((event as MouseEvent).relatedTarget as Element)) {
+                return;
+            }
         }
 
         // Test if the current draggable is accepted by this dropzone. If there is

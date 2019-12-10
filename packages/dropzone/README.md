@@ -51,6 +51,7 @@ Property | Value Type | Description
 `exact` | boolean | Events from Draggable are stopped with stopPropagation() when exact is true.
 `overClass` | String | Class which is set on element when draggingOver (`dragging--over` default)
 `invalidClass` | String | Class which is set on element when draggingOver not accepted element (`dragging--invalid` default)
+`allowOnChild` | boolean | It allows to drop, if draggable is a child of dropzone, without dragging outside.
 
 Method Signature | Description
 --- | ---
