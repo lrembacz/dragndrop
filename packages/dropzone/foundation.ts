@@ -1,8 +1,8 @@
-import {MDCFoundation} from '@material/base/foundation';
 import {DropzoneAdapter} from './adapter';
 import {Acceptor} from './acceptor';
 import {DropzoneEvent} from './event';
 import {cssClasses, strings} from './constants';
+import MDCFoundation from '@material/base/foundation';
 
 export class DropzoneFoundation extends MDCFoundation<DropzoneAdapter> {
     static get cssClasses() {
@@ -62,7 +62,7 @@ export class DropzoneFoundation extends MDCFoundation<DropzoneAdapter> {
         // element. That means we ignore it if user is coming from a child element.
         // TODO: Debug this... as it is not working for every use case
         if (!this.allowOnChild) {
-            if ((event as MouseEvent).relatedTarget !== null &&
+            if ((event as MouseEvent).relatedTarget != null &&
                 this.adapter_.getRootElement().contains((event as MouseEvent).relatedTarget as Element)) {
                 return;
             }

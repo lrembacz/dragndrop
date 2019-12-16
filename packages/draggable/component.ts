@@ -1,12 +1,12 @@
 import './utils/mouse-event.js';
 import smoothscroll from 'smoothscroll-polyfill';
-import {MDCComponent} from '@material/base/component';
 import {DraggableFoundation} from './foundation';
 import {DragInfo} from './drag-info';
 import {Avatar} from './avatar';
 import {DraggableAdapter} from './adapter';
 import {Axis, CustomScroll, DraggableAttachOpts, DraggableInterface} from './types';
 import {applyPassive} from '@material/dom/events';
+import MDCComponent from '@material/base/component';
 
 if (typeof window !== 'undefined') {
     smoothscroll.polyfill();

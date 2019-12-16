@@ -1,11 +1,11 @@
-import {MDCComponent} from '@material/base/component';
 import {DropzoneFoundation} from './foundation';
 import {Acceptor} from './acceptor';
 import {DropzoneAdapter} from './adapter';
-import {CustomEventListener} from '@material/base/types';
 import {applyPassive} from '@material/dom/events';
 import {DropzoneAttachOpts} from './types';
 import {DraggableFoundation} from '@dragndrop/draggable/foundation';
+import MDCComponent from '@material/base/component';
+import {CustomEventListener} from '@material/base/types';
 
 export const DropzoneAttachOptsInitial: DropzoneAttachOpts = {
     acceptor: undefined,
