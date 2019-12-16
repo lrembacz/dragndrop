@@ -1,6 +1,6 @@
 {
   "name": "@dragndrop/dragndrop",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Draggable components",
   "license": "MIT",
   "main": "dist/dragndrop.js",
@@ -20,8 +20,8 @@
   "dependencies": {
     "@material/base": "^3.1.0",
     "@material/dom": "^3.1.0",
-    "@dragndrop/draggable": "^0.1.5",
-    "@dragndrop/dropzone": "^0.1.5",
+    "@dragndrop/draggable": "^0.1.6",
+    "@dragndrop/dropzone": "^0.1.6",
     "tslib": "^1.9.3"
   },
   "publishConfig": {

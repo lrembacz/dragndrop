@@ -56,7 +56,7 @@ export class DragInfo<D> {
     /// depending on [horizontalOnly] and [verticalOnly].
     get position(): Point {
         return this._position
-    };
+    }
 
     /// Sets the current position.
     set position(pos: Point) {

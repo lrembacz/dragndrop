@@ -1,5 +1,4 @@
 import {DraggableAdapter} from './adapter';
-import {MDCFoundation} from '@material/base/foundation';
 import {EventManager, MouseManager, PointerManager,  TouchManager} from './manager';
 import {DraggableEvent} from './event';
 import {_DragEventDispatcher} from './dispatcher';
@@ -7,6 +6,7 @@ import {AnimationHelper} from './utils/animation';
 import {Avatar} from './avatar';
 import {cssClasses, strings, numbers} from './constants';
 import {Axis, CustomScroll} from './types';
+import MDCFoundation from '@material/base/foundation';
 
 /// Counter to generate a unique id for each instance.
 let idCounter: number = 0;
@@ -148,7 +148,7 @@ export class DraggableFoundation<D>  extends MDCFoundation<DraggableAdapter<D>> 
         }
 
         // Fire the drag start event.
-        this.adapter_.notifyAction(DraggableFoundation.strings.DRAG_START_EVENT, DraggableEvent.create<D>(event, this.adapter_.getCurrentDrag()).toObject());
+        this.adapter_.notifyAction(DraggableFoundation.strings.DRAG_START_EVENT, DraggableEvent.create<D>(moveEvent, this.adapter_.getCurrentDrag()).toObject());
 
         // Add the css classes during the drag operation.
         if (this.draggingClass != null) {
@@ -177,7 +177,7 @@ export class DraggableFoundation<D>  extends MDCFoundation<DraggableAdapter<D>> 
         _DragEventDispatcher.dispatchEnterOverLeave<D>(this, target);
 
         // Fire the drag event.
-        this.adapter_.notifyAction(DraggableFoundation.strings.DRAG_EVENT, DraggableEvent.create<D>(event, this.adapter_.getCurrentDrag()).toObject());
+        this.adapter_.notifyAction(DraggableFoundation.strings.DRAG_EVENT, DraggableEvent.create<D>(moveEvent, this.adapter_.getCurrentDrag()).toObject());
     }
 
     /// Handles the drag end (mouseUp or touchEnd) event. The [event] might either
@@ -283,8 +283,11 @@ export class DraggableFoundation<D>  extends MDCFoundation<DraggableAdapter<D>> 
         // Reset dispatcher to fire a last internal dragLeave event.
         _DragEventDispatcher.reset<D>(this);
 
-        // Reset the current drag.
-        this.adapter_.setCurrentDrag(null);
+        // Reset only if it is current Draggable
+        if (this.adapter_.getCurrentDrag() && this.adapter_.getCurrentDrag().draggableId === this.id) {
+            // Reset the current drag.
+            this.adapter_.setCurrentDrag(null);
+        }
     }
 
     /// Abort the current drag

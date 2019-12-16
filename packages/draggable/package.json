@@ -1,6 +1,6 @@
 {
   "name": "@dragndrop/draggable",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Draggable component",
   "license": "MIT",
   "main": "dist/draggable.js",
